@@ -1,14 +1,8 @@
 import { CONFIG } from "@/config";
 import { Team } from "@app-types/team.type";
 import { isSolid } from "@game/map";
+import type { Controls } from "@utils/keyboard";
 import { Vector2 } from "@utils/vector2";
-
-export interface Controls {
-    up: string;
-    down: string;
-    left: string;
-    right: string;
-}
 
 export class Player {
     id: string;

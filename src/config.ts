@@ -6,5 +6,5 @@ export const CONFIG = {
     VISION_ANGLE: Math.PI / 2.5,
     FREEZE_SECS: 10,
     MATCH_SECS: 120,
-    SCORE_TICK: 60,
+    SCORE_TICKS: 60,
 };
