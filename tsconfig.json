@@ -3,24 +3,49 @@
     "target": "ES2023",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
+    "lib": [
+      "ES2023",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "vite/client"
+    ],
     "skipLibCheck": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    /* Paths */
+    "baseUrl": "./",
+    "paths": {
+      "@app-types/*": [
+        "src/types/*"
+      ],
+      "@game/*": [
+        "src/game/*"
+      ],
+      "@entities/*": [
+        "src/entities/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@/*": [
+        "src/*"
+      ],
+    },
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

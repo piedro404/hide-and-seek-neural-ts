@@ -1,0 +1,10 @@
+export const CONFIG = {
+    TILE: 32,
+    PLAYER_SPEED: 2.5,
+    PLAYER_RADIUS: 8,
+    VISION_RANGE: 180,
+    VISION_ANGLE: Math.PI / 2.5,
+    FREEZE_SECS: 10,
+    MATCH_SECS: 120,
+    SCORE_TICK: 60,
+};
