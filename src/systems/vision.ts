@@ -1,12 +1,14 @@
 import { CONFIG } from "@/config";
+import { Team } from "@app-types/team.type";
+import { VISION_CONFIG, type VisionCone } from "@app-types/vision.type";
 import type { Player } from "@entities/Player";
 import { isObstacle } from "@game/map";
 import type { Vector2 } from "@utils/vector2";
 
 function hasLineOfSight(from: Vector2, to: Vector2): boolean {
     const distance = from.distanceTo(to);
-    const steps = Math.ceil(distance / (CONFIG.TILE * 0.25))
-    
+    const steps = Math.ceil(distance / (CONFIG.TILE * 0.25));
+
     for (let i = 1; i < steps; i++) {
         const t = i / steps;
         const intermediateX = from.x + (to.x - from.x) * t;
@@ -21,24 +23,26 @@ function hasLineOfSight(from: Vector2, to: Vector2): boolean {
     return true;
 }
 
-function isInVisionCone(seeker: Player, target: Player): boolean {
-    const distance = seeker.position.distanceTo(target.position);
-    if (distance > CONFIG.VISION_RANGE) return false;
+function isInVisionCone(observer: Player, target: Player): boolean {
+    const { range, angle } = VISION_CONFIG[observer.team];
 
-    const angleToTarget = seeker.position.angleTo(target.position);
-    let diff = angleToTarget - seeker.angle;
+    const distance = observer.position.distanceTo(target.position);
+    if (distance > range) return false;
 
-    while (diff > Math.PI) diff -= 2 * Math.PI;
+    const angleToTarget = observer.position.angleTo(target.position);
+    let diff = angleToTarget - observer.angle;
+
+    while (diff >  Math.PI) diff -= 2 * Math.PI;
     while (diff < -Math.PI) diff += 2 * Math.PI;
 
-    if (Math.abs(diff) > CONFIG.VISION_ANGLE / 2) return false;
-    
-    return hasLineOfSight(seeker.position, target.position);
+    if (Math.abs(diff) > angle / 2) return false;
+
+    return hasLineOfSight(observer.position, target.position);
 }
 
 export function updateVision(seekers: Player[], hiders: Player[]): void {
-    hiders.forEach(h => h.spotted = false);
-    seekers.forEach(s => s.seeing = []);
+    hiders.forEach(h => (h.spotted = false));
+    seekers.forEach(s => (s.seeing = []));
 
     seekers.forEach(seeker => {
         hiders.forEach(hider => {
@@ -48,7 +52,12 @@ export function updateVision(seekers: Player[], hiders: Player[]): void {
             }
         });
     });
+
+    hiders.forEach(hider => {
+        seekers.forEach(seeker => {
+            if (isInVisionCone(hider, seeker)) {
+                hider.seeing.push(seeker);
+            }
+        });
+    });
 }
-
-
-

@@ -1,10 +1,8 @@
 import { CONFIG } from "@/config";
-import { TILE_STYLES, TileType, type TileStyle } from "@app-types/map.type";
-import { Team } from "@app-types/team.type";
-import type { Player } from "@entities/Player";
+import { TILE_STYLES, TileType } from "@app-types/map.type";
 import { MAP_LAYOUT, ROWS, COLS } from "@game/map"
 
-function drawMap(ctx: CanvasRenderingContext2D): void {
+export function drawMap(ctx: CanvasRenderingContext2D): void {
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
             const tile = MAP_LAYOUT[row][col] as TileType;

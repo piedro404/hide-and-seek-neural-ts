@@ -37,7 +37,7 @@
       "@game/*": [
         "src/game/*"
       ],
-      "systems" : [
+      "@app-systems" : [
         "src/systems/*"
       ],
       "@app-types/*": [
