@@ -1,5 +1,5 @@
 import { CONFIG } from "@/config";
-import { Team } from "@app-types/team.types";
+import { Team } from "@app-types/team.type";
 import { isSolid } from "@game/map";
 import { Vector2 } from "@utils/vector2";
 

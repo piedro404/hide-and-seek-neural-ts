@@ -1,4 +1,4 @@
-import { TileType } from "@app-types/map.types";
+import { TileType } from "@app-types/map.type";
 
 export const MAP_LAYOUT: number[][] = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
