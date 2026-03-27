@@ -1,60 +1,65 @@
-import './style.css'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.ts'
+import "@/style.css";
+import { Player } from "@entities/Player";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "@game/map";
+import { CONFIG } from "./config";
+import { Team } from "@app-types/team.type";
+import { Keyboard } from "@utils/keyboard";
+import { createGameLoop, createGameState } from "@game/gameLoop";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src=${viteLogo} class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+function setupCanvas(): CanvasRenderingContext2D {
+    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    canvas.height = CANVAS_HEIGHT;
+    canvas.width = CANVAS_WIDTH;
 
-<div class="ticks"></div>
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    if (!ctx) throw new Error("Failed to get canvas context");
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src=${viteLogo} alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+    return ctx;
+}
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+function createPlayers(): Player[] {
+    const tile = CONFIG.TILE;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+    return [
+        // Hiders
+        new Player("A1", Team.HIDER, tile * 5 + 16, tile * 2 + 16, {
+            up: "w",
+            down: "s",
+            left: "a",
+            right: "d",
+        }),
+        new Player("A2", Team.HIDER, tile * 5 + 16, tile * 17 + 16, {
+            up: "t",
+            down: "g",
+            left: "f",
+            right: "h",
+        }),
+
+
+
+        // Seekers
+        new Player("B1", Team.SEEKER, tile * 17 + 16, tile * 2 + 16, {
+            up: "ArrowUp",
+            down: "ArrowDown",
+            left: "ArrowLeft",
+            right: "ArrowRight",
+        }),
+        new Player("B2", Team.SEEKER, tile * 17 + 16, tile * 17 + 16, {
+            up: "i",
+            down: "k",
+            left: "j",
+            right: "l",
+        }),
+    ];
+}
+
+function main(): void {
+  const ctx = setupCanvas();
+  const players = createPlayers();
+  const state = createGameState(players);
+  const keyboard = new Keyboard();
+
+  createGameLoop(state, ctx, keyboard.keys);
+}
+
+main();

@@ -1,3 +1,4 @@
+import { CONFIG } from "@/config";
 import { TileType } from "@app-types/map.type";
 
 export const MAP_LAYOUT: number[][] = [
@@ -25,6 +26,9 @@ export const MAP_LAYOUT: number[][] = [
 
 export const ROWS = MAP_LAYOUT.length
 export const COLS = MAP_LAYOUT[0].length
+
+export const CANVAS_HEIGHT = ROWS * CONFIG.TILE;
+export const CANVAS_WIDTH = COLS * CONFIG.TILE;
 
 export function isSolid(x: number, y: number): boolean {
     if (x < 0 || x >= ROWS) return true;
