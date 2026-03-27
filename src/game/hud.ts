@@ -30,17 +30,17 @@ export function updateHUB(state: GameState): void {
     if (!state.running) {
         status.textContent =
             state.score.seekers > state.score.hiders
-                ? "seekers vencem"
+                ? "seekers win"
                 : state.score.hiders > state.score.seekers
-                  ? "hiders vencem"
-                  : "empate";
+                  ? "hiders win"
+                  : "tie";
     } else if (state.freezeFrames > 0) {
         status.textContent = `freeze — ${Math.ceil(state.freezeFrames / 60)}s`;
     } else {
         const anySpotted = state.players.some((p) => p.spotted);
         status.textContent = anySpotted
-            ? "seeker avistou alguém"
-            : "hiders seguros";
+            ? "seeker spotted someone"
+            : "hiders are hiding...";
     }
 }
 
