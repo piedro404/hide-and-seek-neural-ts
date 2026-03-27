@@ -5,6 +5,7 @@ import { CONFIG } from "./config";
 import { Team } from "@app-types/team.type";
 import { Keyboard } from "@utils/keyboard";
 import { createGameLoop, createGameState } from "@game/gameLoop";
+import { ControlMode } from "@app-types/control.type";
 
 function setupCanvas(): CanvasRenderingContext2D {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -22,13 +23,13 @@ function createPlayers(): Player[] {
 
     return [
         // Hiders
-        new Player("A1", Team.HIDER, tile * 5 + 16, tile * 2 + 16, {
+        new Player("A1", Team.HIDER, tile * 5 + 16, tile * 2 + 16, ControlMode.HUMAN, {
             up: "w",
             down: "s",
             left: "a",
             right: "d",
         }),
-        new Player("A2", Team.HIDER, tile * 5 + 16, tile * 17 + 16, {
+        new Player("A2", Team.HIDER, tile * 5 + 16, tile * 17 + 16, ControlMode.AI, {
             up: "t",
             down: "g",
             left: "f",
@@ -38,13 +39,13 @@ function createPlayers(): Player[] {
 
 
         // Seekers
-        new Player("B1", Team.SEEKER, tile * 17 + 16, tile * 2 + 16, {
+        new Player("B1", Team.SEEKER, tile * 17 + 16, tile * 2 + 16, ControlMode.HUMAN, {
             up: "ArrowUp",
             down: "ArrowDown",
             left: "ArrowLeft",
             right: "ArrowRight",
         }),
-        new Player("B2", Team.SEEKER, tile * 17 + 16, tile * 17 + 16, {
+        new Player("B2", Team.SEEKER, tile * 17 + 16, tile * 17 + 16, ControlMode.HUMAN, {
             up: "i",
             down: "k",
             left: "j",

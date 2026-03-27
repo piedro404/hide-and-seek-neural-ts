@@ -6,6 +6,8 @@ import { render } from "@services/render";
 import { updateScoring } from "@services/scoring";
 import { updateVision } from "@services/vision";
 import { updateHUB } from "./hud";
+import { ControlMode } from "@app-types/control.type";
+import { applyHumanInput } from "@inputs/human.input";
 
 export function createGameState(players: Player[]): GameState {
     return {
@@ -29,7 +31,13 @@ function tick(
     const seekers = state.players.filter(player => player.team === Team.SEEKER);
     const hiders = state.players.filter(player => player.team === Team.HIDER);
 
-    state.players.forEach(player => player.update(keys, frozen));
+    state.players.forEach(player => {
+        if (player.controlMode === ControlMode.HUMAN) {
+            applyHumanInput(player, keys, frozen);
+        } else {
+            // Lógica de atualização para jogadores controlados por IA pode ser implementada aqui
+        }
+    });
 
     updateVision(seekers, hiders);
     updateScoring(state.score, hiders, frozen);

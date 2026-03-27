@@ -1,10 +1,3 @@
-export interface Controls {
-    up: string;
-    down: string;
-    left: string;
-    right: string;
-}
-
 export class Keyboard {
     keys = new Set<string>;
 

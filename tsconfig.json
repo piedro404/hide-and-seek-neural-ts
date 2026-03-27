@@ -37,6 +37,9 @@
       "@game/*": [
         "src/game/*"
       ],
+      "@inputs/*": [
+        "src/inputs/*"
+      ],
       "@services/*": [
         "src/services/*"
       ],

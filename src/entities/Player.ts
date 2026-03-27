@@ -1,7 +1,7 @@
 import { CONFIG } from "@/config";
+import type { ControlMode, Controls } from "@app-types/control.type";
 import { Team } from "@app-types/team.type";
 import { isSolid } from "@game/map";
-import type { Controls } from "@utils/keyboard";
 import { Vector2 } from "@utils/vector2";
 
 export class Player {
@@ -16,7 +16,8 @@ export class Player {
         public readonly team: Team,
         x: number,
         y: number,
-        public readonly controls: Controls,
+        public readonly controlMode: ControlMode,
+        public readonly controls?: Controls,
     ) {
         this.id = id;
         this.position = new Vector2(x, y);
@@ -25,32 +26,7 @@ export class Player {
         this.seeing = [];
     }
 
-    update(keys: Set<string>, frozen: boolean) {
-        const isFrozen = frozen && this.team === Team.SEEKER;
-        if (isFrozen) return;
-
-        let dx = 0;
-        let dy = 0;
-
-        if (keys.has(this.controls.up)) dy -= CONFIG.PLAYER_SPEED;
-        if (keys.has(this.controls.down)) dy += CONFIG.PLAYER_SPEED;
-        if (keys.has(this.controls.left)) dx -= CONFIG.PLAYER_SPEED;
-        if (keys.has(this.controls.right)) dx += CONFIG.PLAYER_SPEED;
-
-        if (dx !== 0 && dy !== 0) {
-            dx *= 0.707;
-            dy *= 0.707;
-        }
-
-        if (dx !== 0 || dy !== 0) {
-            this.angle = Math.atan2(dy, dx);
-        }
-
-        this.tryMove(dx, 0);
-        this.tryMove(0, dy);
-    }
-
-    private tryMove(dx: number, dy: number) {
+    tryMove(dx: number, dy: number) {
         const newX = this.position.x + dx;
         const newY = this.position.y + dy;
         const radius = CONFIG.PLAYER_RADIUS; // Deixar na variavel para facilitar ajustes futuro, exemplo, para power-ups que aumentam o tamanho do jogador
