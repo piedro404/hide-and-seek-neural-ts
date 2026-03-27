@@ -23,13 +23,12 @@ async function main(): Promise<void> {
     const app = document.getElementById("app")!;
     app.style.display = "flex";
 
-    setupControls(result);
-
     const ctx = setupCanvas();
     const keyboard = new Keyboard();
     const players = createPlayers(result);
     const state = createGameState(players);
-
+    
+    setupControls(result, players);
     createGameLoop(state, ctx, keyboard.keys);
 }
 
