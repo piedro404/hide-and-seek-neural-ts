@@ -9,10 +9,141 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
+  font-family: 'Courier New', monospace;
+  color: #e0e0e0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 canvas {
   display: block;
+  border: 1px solid #2a2a3a;
+}
+
+/* HUD */
+#hud {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-panel {
+  background: #12121c;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.hud-center {
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+.hud-score {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.hud-timer {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #ffcc44;
+}
+
+.hud-status {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #666;
+  min-height: 1rem;
+}
+
+.freeze-bar-wrap {
+  width: 100%;
+  height: 4px;
+  background: #1e1e2e;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.freeze-bar {
+  height: 100%;
+  width: 100%;
+  background: #4488ff;
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+/* cores dos times */
+.seeker { color: #ff4444; }
+.hider  { color: #4488ff; }
+
+/* controles */
+#controls {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+}
+
+.controls-team {
+  flex: 1;
+  background: #12121c;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.controls-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 2px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.controls-player {
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 20px;
+  opacity: 0.7;
+}
+
+kbd {
+  background: #1e1e2e;
+  border: 1px solid #3a3a5a;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  font-family: inherit;
+  color: #ccc;
 }

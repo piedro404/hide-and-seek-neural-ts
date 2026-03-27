@@ -26,7 +26,8 @@ export class Player {
     }
 
     update(keys: Set<string>, frozen: boolean) {
-        if (frozen) return;
+        const isFrozen = frozen && this.team === Team.SEEKER;
+        if (isFrozen) return;
 
         let dx = 0;
         let dy = 0;

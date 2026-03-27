@@ -5,6 +5,7 @@ import { Player } from "@entities/Player";
 import { render } from "@services/render";
 import { updateScoring } from "@services/scoring";
 import { updateVision } from "@services/vision";
+import { updateHUB } from "./hud";
 
 export function createGameState(players: Player[]): GameState {
     return {
@@ -39,6 +40,7 @@ function tick(
     if (state.matchFrames <= 0) state.running = false;
 
     render(ctx, state.players, frozen);
+    updateHUB(state);
 }
 
 export function createGameLoop(
