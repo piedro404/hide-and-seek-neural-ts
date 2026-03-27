@@ -4,6 +4,7 @@ import { Keyboard } from "@utils/keyboard";
 import { createGameLoop, createGameState } from "@game/gameLoop";
 import { showMenu } from "./menu";
 import { createPlayers } from "./modes";
+import { setupControls } from "@game/hud";
 
 function setupCanvas(): CanvasRenderingContext2D {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -21,6 +22,8 @@ async function main(): Promise<void> {
 
     const app = document.getElementById("app")!;
     app.style.display = "flex";
+
+    setupControls(result);
 
     const ctx = setupCanvas();
     const keyboard = new Keyboard();
