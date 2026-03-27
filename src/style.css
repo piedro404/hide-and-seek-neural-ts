@@ -147,3 +147,82 @@ kbd {
   font-family: inherit;
   color: #ccc;
 }
+
+#menu,
+#team-picker,
+#count-picker {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+#app {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  text-transform: lowercase;
+}
+
+.menu-title span {
+  color: #4488ff;
+}
+
+.menu-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.menu-cards {
+  display: flex;
+  gap: 16px;
+}
+
+.menu-card {
+  background: #12121c;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  padding: 24px 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: inherit;
+  color: #e0e0e0;
+}
+
+.menu-card:hover {
+  border-color: #4a4a6a;
+  background: #1a1a2e;
+}
+
+.menu-card.hider:hover { border-color: #4488ff; }
+.menu-card.seeker:hover { border-color: #ff4444; }
+
+.card-icon { font-size: 1.8rem; }
+
+.card-title {
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.card-desc {
+  font-size: 0.65rem;
+  color: #555;
+  text-align: center;
+  letter-spacing: 0.05em;
+}

@@ -6,17 +6,65 @@
     <title>Hide and Seek Neural</title>
   </head>
   <body>
+
+    <!-- menu -->
+    <div id="menu">
+      <h1 class="menu-title">hide and seek <span>neural</span></h1>
+      <p class="menu-sub">selecione o modo de jogo</p>
+      <div class="menu-cards">
+        <button class="menu-card" id="btn-manual">
+          <span class="card-icon">🎮</span>
+          <span class="card-title">jogar</span>
+          <span class="card-desc">4 humanos, 2 vs 2</span>
+        </button>
+        <button class="menu-card" id="btn-pva">
+          <span class="card-icon">🤖</span>
+          <span class="card-title">humano vs ia</span>
+          <span class="card-desc">você controla um time</span>
+        </button>
+        <button class="menu-card" id="btn-observe">
+          <span class="card-icon">👁</span>
+          <span class="card-title">observar ia</span>
+          <span class="card-desc">assista a ia aprender</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- team selection (PvA) -->
+    <div id="team-picker">
+      <h2 class="menu-title">qual time você joga?</h2>
+      <div class="menu-cards">
+        <button class="menu-card hider" id="btn-hider">
+          <span class="card-icon">🫥</span>
+          <span class="card-title">hiders</span>
+          <span class="card-desc">se esconda dos seekers</span>
+        </button>
+        <button class="menu-card seeker" id="btn-seeker">
+          <span class="card-icon">🔦</span>
+          <span class="card-title">seekers</span>
+          <span class="card-desc">encontre os hiders</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- quantity selection (Observe) -->
+    <div id="count-picker">
+      <h2 class="menu-title">jogadores por time</h2>
+      <div class="menu-cards">
+        <button class="menu-card" id="btn-count-1"><span class="card-title">1 vs 1</span></button>
+        <button class="menu-card" id="btn-count-2"><span class="card-title">2 vs 2</span></button>
+        <button class="menu-card" id="btn-count-3"><span class="card-title">3 vs 3</span></button>
+        <button class="menu-card" id="btn-count-4"><span class="card-title">4 vs 4</span></button>
+      </div>
+    </div>
+
+    <!-- game -->
     <div id="app">
-
-      <canvas id="canvas"></canvas>
-
       <div id="hud">
-
         <div class="hud-panel">
           <span class="hud-label seeker">⬤ Seekers</span>
           <span class="hud-score" id="score-seekers">0</span>
         </div>
-
         <div class="hud-panel hud-center">
           <span class="hud-timer" id="timer">2:00</span>
           <div class="freeze-bar-wrap">
@@ -24,14 +72,12 @@
           </div>
           <span class="hud-status" id="status">freeze</span>
         </div>
-
         <div class="hud-panel">
           <span class="hud-label hider">⬤ Hiders</span>
           <span class="hud-score" id="score-hiders">0</span>
         </div>
-
       </div>
-
+      <canvas id="canvas"></canvas>
       <div id="controls">
         <div class="controls-team hider">
           <span class="controls-title">Hiders</span>
@@ -44,7 +90,6 @@
             <kbd>T</kbd><kbd>F</kbd><kbd>G</kbd><kbd>H</kbd>
           </div>
         </div>
-
         <div class="controls-team seeker">
           <span class="controls-title">Seekers</span>
           <div class="controls-row">
@@ -57,8 +102,8 @@
           </div>
         </div>
       </div>
-
     </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

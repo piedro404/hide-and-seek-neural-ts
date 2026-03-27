@@ -1,11 +1,9 @@
 import "@/style.css";
-import { Player } from "@entities/Player";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "@game/map";
-import { CONFIG } from "./config";
-import { Team } from "@app-types/team.type";
 import { Keyboard } from "@utils/keyboard";
 import { createGameLoop, createGameState } from "@game/gameLoop";
-import { ControlMode } from "@app-types/control.type";
+import { showMenu } from "./menu";
+import { createPlayers } from "./modes";
 
 function setupCanvas(): CanvasRenderingContext2D {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -18,49 +16,18 @@ function setupCanvas(): CanvasRenderingContext2D {
     return ctx;
 }
 
-function createPlayers(): Player[] {
-    const tile = CONFIG.TILE;
+async function main(): Promise<void> {
+    const result = await showMenu();
 
-    return [
-        // Hiders
-        new Player("A1", Team.HIDER, tile * 5 + 16, tile * 2 + 16, ControlMode.HUMAN, {
-            up: "w",
-            down: "s",
-            left: "a",
-            right: "d",
-        }),
-        new Player("A2", Team.HIDER, tile * 5 + 16, tile * 17 + 16, ControlMode.AI, {
-            up: "t",
-            down: "g",
-            left: "f",
-            right: "h",
-        }),
+    const app = document.getElementById("app")!;
+    app.style.display = "flex";
 
+    const ctx = setupCanvas();
+    const keyboard = new Keyboard();
+    const players = createPlayers(result);
+    const state = createGameState(players);
 
-
-        // Seekers
-        new Player("B1", Team.SEEKER, tile * 17 + 16, tile * 2 + 16, ControlMode.HUMAN, {
-            up: "ArrowUp",
-            down: "ArrowDown",
-            left: "ArrowLeft",
-            right: "ArrowRight",
-        }),
-        new Player("B2", Team.SEEKER, tile * 17 + 16, tile * 17 + 16, ControlMode.HUMAN, {
-            up: "i",
-            down: "k",
-            left: "j",
-            right: "l",
-        }),
-    ];
-}
-
-function main(): void {
-  const ctx = setupCanvas();
-  const players = createPlayers();
-  const state = createGameState(players);
-  const keyboard = new Keyboard();
-
-  createGameLoop(state, ctx, keyboard.keys);
+    createGameLoop(state, ctx, keyboard.keys);
 }
 
 main();
