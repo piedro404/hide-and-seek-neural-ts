@@ -10,9 +10,12 @@ import { ControlMode } from "@app-types/control.type";
 import { applyHumanInput } from "@inputs/human.input";
 import { updateBush } from "@services/bush";
 
-export function createGameState(players: Player[], matchSecs?: number): GameState {
+export function createGameState(
+    players: Player[],
+    matchSecs?: number,
+): GameState {
     const duration = matchSecs ?? CONFIG.MATCH_SECS;
-    
+
     return {
         players,
         score: { seekers: 0, hiders: 0, tick: 0 },
@@ -32,10 +35,12 @@ function tick(
 
     const frozen = state.freezeFrames > 0;
 
-    const seekers = state.players.filter(player => player.team === Team.SEEKER);
-    const hiders = state.players.filter(player => player.team === Team.HIDER);
+    const seekers = state.players.filter(
+        (player) => player.team === Team.SEEKER,
+    );
+    const hiders = state.players.filter((player) => player.team === Team.HIDER);
 
-    state.players.forEach(player => {
+    state.players.forEach((player) => {
         if (player.controlMode === ControlMode.HUMAN) {
             applyHumanInput(player, keys, frozen);
         } else {
@@ -46,7 +51,7 @@ function tick(
     updateBush(state.players);
     updateVision(seekers, hiders);
     updateScoring(state.score, hiders, frozen);
-    
+
     if (frozen) state.freezeFrames--;
     state.matchFrames--;
 
@@ -61,6 +66,7 @@ export function createGameLoop(
     ctx: CanvasRenderingContext2D,
     keys: Set<string>,
     hubPrefix: string = "",
+    onMatchEnd?: () => void,
 ): () => void {
     let rafId: number;
 
@@ -77,6 +83,9 @@ export function createGameLoop(
     function loop(): void {
         tick(state, ctx, keys, hubPrefix);
         if (state.running) rafId = requestAnimationFrame(loop);
+        else {
+            onMatchEnd?.();
+        }
     }
 
     start();

@@ -8,6 +8,7 @@ import { setupControls } from "@game/hud";
 import { CONFIG } from "./config";
 import { MAPS } from "@game/maps";
 import { GameMode } from "@app-types/game.type";
+import { hasTrainedModel } from "./ai/model";
 
 function setupCanvas(): CanvasRenderingContext2D {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -25,6 +26,14 @@ async function main(): Promise<void> {
     if (result.mode === GameMode.TRAIN) return;
 
     loadMap(MAPS[result.mapId])
+
+    const needsAI = result.mode === GameMode.OBSERVE || result.mode === GameMode.PVA;
+    if (needsAI && !hasTrainedModel()) {
+        console.warn("no trained model — AI will act randomly");
+        window.alert("No trained model found. The AI will act randomly.");
+        window.location.reload();
+        return;
+    }
 
     const app = document.getElementById("app")! as HTMLElement;
     app.style.display = "flex";
