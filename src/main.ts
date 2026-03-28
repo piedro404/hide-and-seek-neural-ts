@@ -7,6 +7,7 @@ import { createPlayers } from "./modes";
 import { setupControls } from "@game/hud";
 import { CONFIG } from "./config";
 import { MAPS } from "@game/maps";
+import { GameMode } from "@app-types/game.type";
 
 function setupCanvas(): CanvasRenderingContext2D {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -21,6 +22,8 @@ function setupCanvas(): CanvasRenderingContext2D {
 
 async function main(): Promise<void> {
     const result = await showMenu();
+    if (result.mode === GameMode.TRAIN) return;
+
     loadMap(MAPS[result.mapId])
 
     const app = document.getElementById("app")! as HTMLElement;

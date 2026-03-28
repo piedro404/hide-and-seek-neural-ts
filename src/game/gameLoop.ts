@@ -10,12 +10,14 @@ import { ControlMode } from "@app-types/control.type";
 import { applyHumanInput } from "@inputs/human.input";
 import { updateBush } from "@services/bush";
 
-export function createGameState(players: Player[]): GameState {
+export function createGameState(players: Player[], matchSecs?: number): GameState {
+    const duration = matchSecs ?? CONFIG.MATCH_SECS;
+    
     return {
         players,
         score: { seekers: 0, hiders: 0, tick: 0 },
         freezeFrames: CONFIG.FREEZE_SECS * 60,
-        matchFrames: CONFIG.MATCH_SECS * 60,
+        matchFrames: duration * 60 + CONFIG.FREEZE_SECS * 60,
         running: false,
     };
 }
@@ -24,6 +26,7 @@ function tick(
     state: GameState,
     ctx: CanvasRenderingContext2D,
     keys: Set<string>,
+    hudPrefix: string = "",
 ): void {
     if (!state.running) return;
 
@@ -50,13 +53,14 @@ function tick(
     if (state.matchFrames <= 0) state.running = false;
 
     render(ctx, state.players, frozen);
-    updateHUB(state);
+    updateHUB(state, hudPrefix);
 }
 
 export function createGameLoop(
     state: GameState,
     ctx: CanvasRenderingContext2D,
     keys: Set<string>,
+    hubPrefix: string = "",
 ): () => void {
     let rafId: number;
 
@@ -71,7 +75,7 @@ export function createGameLoop(
     }
 
     function loop(): void {
-        tick(state, ctx, keys);
+        tick(state, ctx, keys, hubPrefix);
         if (state.running) rafId = requestAnimationFrame(loop);
     }
 

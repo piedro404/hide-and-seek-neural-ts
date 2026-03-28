@@ -105,5 +105,7 @@ export function createPlayers(result: MenuResult): Player[] {
                 ),
             ];
         }
+        default:
+            throw new Error(`Unsupported game mode: ${result.mode}`);
     }
 }

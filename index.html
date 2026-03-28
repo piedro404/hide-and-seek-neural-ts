@@ -65,6 +65,128 @@
     </div>
   </div>
 
+  <!-- train ai menu -->
+  <div id="train-menu">
+    <h2 class="menu-title">train ai</h2>
+    <div class="menu-cards">
+      <button class="menu-card" id="btn-train-new">
+        <span class="card-icon">🌱</span>
+        <span class="card-title">new training</span>
+        <span class="card-desc">start from scratch</span>
+      </button>
+      <button class="menu-card" id="btn-train-default">
+        <span class="card-icon">📦</span>
+        <span class="card-title">default model</span>
+        <span class="card-desc">load pre-trained agents</span>
+      </button>
+      <button class="menu-card" id="btn-train-continue">
+        <span class="card-icon">▶️</span>
+        <span class="card-title">continue</span>
+        <span class="card-desc">resume last session</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- train config -->
+  <div id="train-config">
+    <h2 class="menu-title">training config</h2>
+    <div class="train-config-form">
+
+      <div class="config-row">
+        <label class="config-label">agents per team</label>
+        <div class="config-options" id="agent-count-options">
+          <button class="config-btn active" data-value="10">10</button>
+          <button class="config-btn" data-value="20">20</button>
+          <button class="config-btn" data-value="50">50</button>
+          <button class="config-btn" data-value="100">100</button>
+        </div>
+      </div>
+
+      <div class="config-row">
+        <label class="config-label">match duration</label>
+        <div class="config-options" id="match-duration-options">
+          <button class="config-btn active" data-value="60">1 min</button>
+          <button class="config-btn" data-value="120">2 min</button>
+          <button class="config-btn" data-value="180">3 min</button>
+        </div>
+      </div>
+
+      <div class="config-row">
+        <label class="config-label">map</label>
+        <div class="menu-cards" id="train-map-cards"></div>
+      </div>
+
+      <button class="menu-card start-btn" id="btn-train-start">
+        <span class="card-title">start training</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- train view -->
+  <div id="train-app">
+    <div id="train-hud">
+      <div class="hud-panel">
+        <span class="hud-label seeker">⬤ Seekers</span>
+        <span class="hud-score" id="train-score-seekers">0</span>
+      </div>
+      <div class="hud-panel hud-center">
+        <span class="train-generation" id="train-generation-label">gen 0</span>
+        <span class="hud-timer" id="train-timer">2:00</span>
+        <div class="freeze-bar-wrap">
+          <div class="freeze-bar" id="train-freeze-bar"></div>
+        </div>
+        <span class="hud-status" id="train-status">initializing...</span>
+      </div>
+      <div class="hud-panel">
+        <span class="hud-label hider">⬤ Hiders</span>
+        <span class="hud-score" id="train-score-hiders">0</span>
+      </div>
+    </div>
+
+    <div id="train-main">
+      <canvas id="train-canvas"></canvas>
+
+      <div id="train-sidebar">
+
+        <div class="train-panel">
+          <span class="train-panel-title">seeker agent</span>
+          <div class="nn-placeholder">
+            <span>neural network visualization</span>
+            <span class="nn-placeholder-sub">coming soon</span>
+          </div>
+        </div>
+
+        <div class="train-panel">
+          <span class="train-panel-title">hider agent</span>
+          <div class="nn-placeholder">
+            <span>neural network visualization</span>
+            <span class="nn-placeholder-sub">coming soon</span>
+          </div>
+        </div>
+
+        <div class="train-panel">
+          <span class="train-panel-title">stats</span>
+          <div class="train-stats">
+            <div class="stat-row">
+              <span class="stat-label">generation</span>
+              <span class="stat-value" id="stat-generation">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">agents per team</span>
+              <span class="stat-value" id="stat-agents-per-team">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">match duration</span>
+              <span class="stat-value" id="stat-match-duration">—</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- map selection -->
   <div id="map-picker">
     <h2 class="menu-title">select a map 🗺️</h2>

@@ -7,7 +7,7 @@ export const CONFIG = {
     HIDER_VISION_RANGE: 120,
     HIDER_VISION_ANGLE: Math.PI / 2,     
     FREEZE_SECS: 10,
-    MATCH_SECS: 130,
+    MATCH_SECS: 120,
     SCORE_TICKS: 60,
     FPS: 60,
 };

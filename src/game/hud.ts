@@ -5,21 +5,22 @@ import type { GameState } from "@app-types/score.type";
 import { Team } from "@app-types/team.type";
 import type { Player } from "@entities/Player";
 
-export function updateHUB(state: GameState): void {
+export function updateHUB(state: GameState, prefix: string = ""): void {
     const currentMatchTime = Math.ceil(state.matchFrames / CONFIG.FPS);
     const mins = Math.floor(currentMatchTime / 60);
     const secs = currentMatchTime % 60;
 
-    const timer = document.getElementById("timer") as HTMLDivElement;
-    const freezeBar = document.getElementById("freeze-bar") as HTMLDivElement;
-    const status = document.getElementById("status") as HTMLDivElement;
+    const timer = document.getElementById(`${prefix}timer`)! as HTMLElement;
+    const freezeBar = document.getElementById(
+        `${prefix}freeze-bar`,
+    )! as HTMLElement;
+    const status = document.getElementById(`${prefix}status`)! as HTMLElement;
     const scoreTeamSeekers = document.getElementById(
-        "score-seekers",
-    ) as HTMLDivElement;
+        `${prefix}score-seekers`,
+    )! as HTMLElement;
     const scoreTeamHiders = document.getElementById(
-        "score-hiders",
-    ) as HTMLDivElement;
-
+        `${prefix}score-hiders`,
+    )! as HTMLElement;
     timer.textContent = `${mins}:${secs.toString().padStart(2, "0")}`;
     scoreTeamSeekers.textContent = String(state.score.seekers);
     scoreTeamHiders.textContent = String(state.score.hiders);
