@@ -1,21 +1,18 @@
+import type { Vector2 } from "@utils/vector2";
+
 export enum TileType {
     EMPTY = 0,
     WALL = 1,
     BUSH = 2,
 }
 
-export type Position = {
-    x: number;
-    y: number;
-};
-
 export interface BaseGameMap {
     id: string;
     name: string;
     description: string;
     spawns: {
-        hiders: Position[];
-        seekers: Position[];
+        hiders: Vector2[];
+        seekers: Vector2[];
     };
     layout: TileType[][];
 }

@@ -3,8 +3,8 @@ import { CONFIG } from "./config";
 import { Player } from "@entities/Player";
 import { Team } from "@app-types/team.type";
 import { GameMode, type MenuResult } from "@app-types/game.type";
-import type { Position } from "@app-types/map.type";
 import { MAPS } from "@game/maps";
+import { Vector2 } from "@utils/vector2";
 
 const HIDER_CONTROLS: Controls[] = [
     { up: "w", down: "s", left: "a", right: "d" },
@@ -21,11 +21,11 @@ const SEEKER_CONTROLS: Controls[] = [
     { up: "i", down: "k", left: "j", right: "l" },
 ];
 
-function spawnToPixel(spawn: Position) {
-    return {
-        x: spawn.x * CONFIG.TILE + CONFIG.TILE / 2,
-        y: spawn.y * CONFIG.TILE + CONFIG.TILE / 2,
-    };
+function spawnToPixel(spawn: Vector2): Vector2 {
+    return new Vector2(
+        spawn.x * CONFIG.TILE + CONFIG.TILE / 2,
+        spawn.y * CONFIG.TILE + CONFIG.TILE / 2
+    );
 }
 
 function createHider(index: number, mode: ControlMode, mapId: string): Player {
@@ -34,7 +34,7 @@ function createHider(index: number, mode: ControlMode, mapId: string): Player {
     const spawn = spawns[index % spawns.length];
     const pos = spawnToPixel(spawn);
     const controls =
-        mode === ControlMode.HUMAN && HIDER_CONTROLS.length <= index
+        mode === ControlMode.HUMAN && HIDER_CONTROLS.length > index
             ? HIDER_CONTROLS[index]
             : undefined;
 
@@ -54,7 +54,7 @@ function createSeeker(index: number, mode: ControlMode, mapId: string): Player {
     const spawn = spawns[index % spawns.length];
     const pos = spawnToPixel(spawn);
     const controls =
-        mode === ControlMode.HUMAN && SEEKER_CONTROLS.length <= index
+        mode === ControlMode.HUMAN && SEEKER_CONTROLS.length > index
             ? SEEKER_CONTROLS[index]
             : undefined;
 

@@ -1,4 +1,5 @@
 import type { BaseGameMap, TileType } from "@app-types/map.type";
+import { Vector2 } from "@utils/vector2";
 
 export const map01: BaseGameMap = {
     id: "map01",
@@ -6,16 +7,16 @@ export const map01: BaseGameMap = {
     description: "Symmetric layout with bushes and corridors",
     spawns: {
         hiders: [
-            { x: 5, y: 2 },
-            { x: 5, y: 17 },
-            { x: 3, y: 9 },
-            { x: 4, y: 5 },
+            new Vector2(5, 2),
+            new Vector2(5, 17),
+            new Vector2(3, 9),
+            new Vector2(4, 5),
         ],
         seekers: [
-            { x: 17, y: 17 },
-            { x: 17, y: 2 },
-            { x: 16, y: 9 },
-            { x: 15, y: 5 },
+            new Vector2(17, 17),
+            new Vector2(17, 2),
+            new Vector2(16, 9),
+            new Vector2(15, 5),
         ],
     },
     layout: [
