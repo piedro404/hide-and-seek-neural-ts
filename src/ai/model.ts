@@ -1,12 +1,13 @@
 import { STORAGE_KEYS, type SavedWeights } from "@app-types/agent.type";
+import { Team } from "@app-types/team.type";
 
-export function saveWeights(team: "seeker" | "hider", data: SavedWeights): void {
-    const key = team === "seeker" ? STORAGE_KEYS.seekerAI : STORAGE_KEYS.hiderAI;
+export function saveWeights(team: Team, data: SavedWeights): void {
+    const key = team === Team.SEEKER ? STORAGE_KEYS.seekerAI : STORAGE_KEYS.hiderAI;
     localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function loadWeights(team: "seeker" | "hider"): SavedWeights | null {
-    const key = team === "seeker" ? STORAGE_KEYS.seekerAI : STORAGE_KEYS.hiderAI;
+export function loadWeights(team: Team): SavedWeights | null {
+    const key = team === Team.SEEKER ? STORAGE_KEYS.seekerAI : STORAGE_KEYS.hiderAI;
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : null;
 }
