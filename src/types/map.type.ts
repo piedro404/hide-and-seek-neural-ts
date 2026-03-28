@@ -4,6 +4,22 @@ export enum TileType {
     BUSH = 2,
 }
 
+export type Position = {
+    x: number;
+    y: number;
+};
+
+export interface BaseGameMap {
+    id: string;
+    name: string;
+    description: string;
+    spawns: {
+        hiders: Position[];
+        seekers: Position[];
+    };
+    layout: TileType[][];
+}
+
 export interface TileStyle {
     fill: string;
     stroke?: string;
@@ -22,8 +38,8 @@ export const TILE_STYLES: Record<TileType, TileStyle> = {
         strokeInset: 1,
     },
     [TileType.BUSH]: {
-        fill: "#072212", 
-        stroke: "#063d1b", 
+        fill: "#072212",
+        stroke: "#063d1b",
         padding: 3,
         strokeInset: 1,
     },

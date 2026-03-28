@@ -3,22 +3,8 @@ import { CONFIG } from "./config";
 import { Player } from "@entities/Player";
 import { Team } from "@app-types/team.type";
 import { GameMode, type MenuResult } from "@app-types/game.type";
-
-const tile = CONFIG.TILE;
-
-const HIDER_STARTS = [
-    { x: tile * 5 + 16, y: tile * 2 + 16 },
-    { x: tile * 5 + 16, y: tile * 17 + 16 },
-    { x: tile * 3 + 16, y: tile * 9 + 16 },
-    { x: tile * 4 + 16, y: tile * 5 + 16 },
-];
-
-const SEEKER_STARTS = [
-    { x: tile * 17 + 16, y: tile * 17 + 16 },
-    { x: tile * 17 + 16, y: tile * 2 + 16 },
-    { x: tile * 16 + 16, y: tile * 9 + 16 },
-    { x: tile * 15 + 16, y: tile * 5 + 16 },
-];
+import type { Position } from "@app-types/map.type";
+import { MAPS } from "@game/maps";
 
 const HIDER_CONTROLS: Controls[] = [
     { up: "w", down: "s", left: "a", right: "d" },
@@ -35,10 +21,23 @@ const SEEKER_CONTROLS: Controls[] = [
     { up: "i", down: "k", left: "j", right: "l" },
 ];
 
-function createHider(index: number, mode: ControlMode): Player {
-    const pos = HIDER_STARTS[index];
+function spawnToPixel(spawn: Position) {
+    return {
+        x: spawn.x * CONFIG.TILE + CONFIG.TILE / 2,
+        y: spawn.y * CONFIG.TILE + CONFIG.TILE / 2,
+    };
+}
+
+function createHider(index: number, mode: ControlMode, mapId: string): Player {
+    const spawns = MAPS[mapId as keyof typeof MAPS].spawns.hiders;
+
+    const spawn = spawns[index % spawns.length];
+    const pos = spawnToPixel(spawn);
     const controls =
-        mode === ControlMode.HUMAN ? HIDER_CONTROLS[index] : undefined;
+        mode === ControlMode.HUMAN && HIDER_CONTROLS.length <= index
+            ? HIDER_CONTROLS[index]
+            : undefined;
+
     return new Player(
         `A${index + 1}`,
         Team.HIDER,
@@ -49,10 +48,16 @@ function createHider(index: number, mode: ControlMode): Player {
     );
 }
 
-function createSeeker(index: number, mode: ControlMode): Player {
-    const pos = SEEKER_STARTS[index];
+function createSeeker(index: number, mode: ControlMode, mapId: string): Player {
+    const spawns = MAPS[mapId as keyof typeof MAPS].spawns.seekers;
+    
+    const spawn = spawns[index % spawns.length];
+    const pos = spawnToPixel(spawn);
     const controls =
-        mode === ControlMode.HUMAN ? SEEKER_CONTROLS[index] : undefined;
+        mode === ControlMode.HUMAN && SEEKER_CONTROLS.length <= index
+            ? SEEKER_CONTROLS[index]
+            : undefined;
+
     return new Player(
         `B${index + 1}`,
         Team.SEEKER,
@@ -64,26 +69,40 @@ function createSeeker(index: number, mode: ControlMode): Player {
 }
 
 export function createPlayers(result: MenuResult): Player[] {
+    const mapId = result.mapId;
+
     switch (result.mode) {
         case GameMode.MANUAL:
             return [
-                createHider(0,  ControlMode.HUMAN),
-                createHider(1,  ControlMode.HUMAN),
-                createSeeker(0, ControlMode.HUMAN),
-                createSeeker(1, ControlMode.HUMAN),
+                createHider(0, ControlMode.HUMAN, mapId),
+                createHider(1, ControlMode.HUMAN, mapId),
+                createSeeker(0, ControlMode.HUMAN, mapId),
+                createSeeker(1, ControlMode.HUMAN, mapId),
             ];
         case GameMode.PVA: {
             const humanIsHider = result.humanTeam === Team.HIDER;
             return [
-                createHider(0,  humanIsHider ? ControlMode.HUMAN : ControlMode.AI),
-                createSeeker(0, humanIsHider ? ControlMode.AI : ControlMode.HUMAN),
+                createHider(
+                    0,
+                    humanIsHider ? ControlMode.HUMAN : ControlMode.AI,
+                    mapId,
+                ),
+                createSeeker(
+                    0,
+                    humanIsHider ? ControlMode.AI : ControlMode.HUMAN,
+                    mapId,
+                ),
             ];
         }
         case GameMode.OBSERVE: {
             const n = result.playersPerTeam ?? 2;
             return [
-                ...Array.from({ length: n }, (_, i) => createHider(i,  ControlMode.AI)),
-                ...Array.from({ length: n }, (_, i) => createSeeker(i, ControlMode.AI)),
+                ...Array.from({ length: n }, (_, i) =>
+                    createHider(i, ControlMode.AI, mapId),
+                ),
+                ...Array.from({ length: n }, (_, i) =>
+                    createSeeker(i, ControlMode.AI, mapId),
+                ),
             ];
         }
     }

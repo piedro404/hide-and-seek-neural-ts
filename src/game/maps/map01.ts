@@ -1,9 +1,23 @@
-import type { TileType } from "@app-types/map.type";
+import type { BaseGameMap, TileType } from "@app-types/map.type";
 
-export const map01 = {
+export const map01: BaseGameMap = {
     id: "map01",
     name: "Classic",
     description: "Symmetric layout with bushes and corridors",
+    spawns: {
+        hiders: [
+            { x: 5, y: 2 },
+            { x: 5, y: 17 },
+            { x: 3, y: 9 },
+            { x: 4, y: 5 },
+        ],
+        seekers: [
+            { x: 17, y: 17 },
+            { x: 17, y: 2 },
+            { x: 16, y: 9 },
+            { x: 15, y: 5 },
+        ],
+    },
     layout: [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -25,7 +39,7 @@ export const map01 = {
         [1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    ] as TileType[][],
+    ] satisfies TileType[][],
 };
 
 export type GameMap = typeof map01;
