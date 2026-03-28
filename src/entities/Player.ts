@@ -10,6 +10,7 @@ export class Player {
     angle: number;
     spotted: boolean;
     seeing: Player[];
+    inBush: boolean = false;
 
     constructor(
         id: string,

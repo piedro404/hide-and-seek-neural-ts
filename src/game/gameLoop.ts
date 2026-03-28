@@ -8,6 +8,7 @@ import { updateVision } from "@services/vision";
 import { updateHUB } from "./hud";
 import { ControlMode } from "@app-types/control.type";
 import { applyHumanInput } from "@inputs/human.input";
+import { updateBush } from "@services/bush";
 
 export function createGameState(players: Player[]): GameState {
     return {
@@ -39,9 +40,10 @@ function tick(
         }
     });
 
+    updateBush(state.players);
     updateVision(seekers, hiders);
     updateScoring(state.score, hiders, frozen);
-
+    
     if (frozen) state.freezeFrames--;
     state.matchFrames--;
 

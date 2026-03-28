@@ -19,12 +19,12 @@ export const TILE_STYLES: Record<TileType, TileStyle> = {
         fill: "#1a1a2e",
         stroke: "#2a2a4a",
         padding: 0,
-        strokeInset: 1
+        strokeInset: 1,
     },
-    [TileType.OBSTACLE]: { 
-        fill: "#14142a", 
-        stroke: "#1e1e38", 
-        padding: 4,
-        strokeInset: 1
+    [TileType.OBSTACLE]: {
+        fill: "#072212", 
+        stroke: "#063d1b", 
+        padding: 3,
+        strokeInset: 1,
     },
 };

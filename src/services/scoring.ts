@@ -22,9 +22,10 @@ export function updateScoring(
     score.tick = 0;
 
     const spottedHiders = hiders.some((h) => h.spotted);
+    const inBushHiders = hiders.some((h) => h.inBush);
     if (spottedHiders) {
         score.seekers++;
-    } else {
+    } else if (!inBushHiders) {
         score.hiders++;
     }
 }

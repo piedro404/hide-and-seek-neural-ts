@@ -37,10 +37,16 @@ export function isSolid(x: number, y: number): boolean {
     return MAP_LAYOUT[y][x] === TileType.WALL;
 }
 
+export function isBush(x: number, y: number): boolean {
+    if (x < 0 || x >= ROWS) return false;
+    if (y < 0 || y >= COLS) return false;
+    
+    return MAP_LAYOUT[y][x] === TileType.OBSTACLE;
+}
+
 export function isObstacle(x: number, y: number): boolean {
     if (x < 0 || x >= ROWS) return false;
     if (y < 0 || y >= COLS) return false;
 
     return MAP_LAYOUT[y][x] === TileType.OBSTACLE || MAP_LAYOUT[y][x] === TileType.WALL;
 }
-

@@ -26,8 +26,11 @@ function resolvePlayerStyle(player: Player, frozen: boolean) {
     }
 
     return {
-        fill: player.spotted ? style.spotted! : style.base,
-        stroke: player.spotted ? style.spottedStroke! : style.stroke,
+        fill: (player.spotted || player.inBush) ? style.spotted! : style.base,
+        stroke:
+            (player.spotted || player.inBush)
+                ? style.spottedStroke!
+                : style.stroke,
         direction: style.direction,
     };
 }
