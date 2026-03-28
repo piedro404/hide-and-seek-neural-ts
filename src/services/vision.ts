@@ -40,13 +40,25 @@ function isInVisionCone(observer: Player, target: Player): boolean {
     return hasLineOfSight(observer.position, target.position);
 }
 
+function sameTile(seeker: Player, hider: Player): boolean {
+    const seekCol = Math.floor(seeker.position.x / CONFIG.TILE);
+    const seekRow = Math.floor(seeker.position.y / CONFIG.TILE);
+    const hiderCol = Math.floor(hider.position.x / CONFIG.TILE);
+    const hiderRow = Math.floor(hider.position.y / CONFIG.TILE);
+
+    return seekCol === hiderCol && seekRow === hiderRow;
+}
+    
 export function updateVision(seekers: Player[], hiders: Player[]): void {
     hiders.forEach(h => (h.spotted = false));
     seekers.forEach(s => (s.seeing = []));
 
     seekers.forEach(seeker => {
         hiders.forEach(hider => {
-            if (isInVisionCone(seeker, hider)) {
+            const spottedByCone = isInVisionCone(seeker, hider);
+            const spottedInBush = seeker.inBush && hider.inBush && sameTile(seeker, hider);
+
+            if (spottedByCone || spottedInBush) {
                 seeker.seeing.push(hider);
                 hider.spotted = true;
             }
