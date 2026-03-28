@@ -1,6 +1,7 @@
 import { GameMode, type MenuResult } from "@app-types/game.type";
 import { Team } from "@app-types/team.type";
 import { MAPS, type MapId } from "@game/maps";
+import { drawPreview } from "@services/render/map.render";
 
 function hideAll(): void {
     ["menu", "team-picker", "count-picker", "map-picker"].forEach(id => {
@@ -33,10 +34,12 @@ function showMapPicker(onSelect: (mapId: MapId) => void): void {
     cards.innerHTML = ""
 
     for (const [id, map] of Object.entries(MAPS)) {
+        const preview = drawPreview(map);
+
         const btn = document.createElement("button") as HTMLButtonElement
         btn.className = "menu-card"
         btn.innerHTML = `
-            <span class="card-icon">🗺️</span>
+            <img src="${preview}" alt="${map.name}" class="map-preview" />
             <span class="card-title">${map.name}</span>
             <span class="card-desc">${map.description}</span>
         `
