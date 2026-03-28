@@ -1,11 +1,11 @@
 import { CONFIG } from "@/config";
 import { TILE_STYLES, TileType } from "@app-types/map.type";
-import { MAP_LAYOUT, ROWS, COLS } from "@game/map"
+import { getLayout, getRows, getCols } from "@game/map"
 
 export function drawMap(ctx: CanvasRenderingContext2D): void {
-    for (let row = 0; row < ROWS; row++) {
-        for (let col = 0; col < COLS; col++) {
-            const tile = MAP_LAYOUT[row][col] as TileType;
+    for (let row = 0; row < getRows(); row++) {
+        for (let col = 0; col < getCols(); col++) {
+            const tile = getLayout()[row][col] as TileType;
             const style = TILE_STYLES[tile];
 
             const x = col * CONFIG.TILE;

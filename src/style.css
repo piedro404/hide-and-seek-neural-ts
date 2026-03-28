@@ -150,7 +150,8 @@ kbd {
 
 #menu,
 #team-picker,
-#count-picker {
+#count-picker,
+#map-picker {
   display: none;
   flex-direction: column;
   align-items: center;

@@ -1,86 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hide and Seek Neural</title>
-  </head>
-  <body>
 
-    <!-- menu -->
-    <div id="menu">
-      <h1 class="menu-title">hide and seek <span>neural</span></h1>
-      <p class="menu-sub">select a game mode</p>
-      <div class="menu-cards">
-        <button class="menu-card" id="btn-manual">
-          <span class="card-icon">🎮</span>
-          <span class="card-title">play</span>
-          <span class="card-desc">4 humans, 2 vs 2</span>
-        </button>
-        <button class="menu-card" id="btn-pva">
-          <span class="card-icon">🤖</span>
-          <span class="card-title">human vs ai</span>
-          <span class="card-desc">you control one team</span>
-        </button>
-        <button class="menu-card" id="btn-observe">
-          <span class="card-icon">👁</span>
-          <span class="card-title">watch ai</span>
-          <span class="card-desc">observe the ai learn</span>
-        </button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hide and Seek Neural</title>
+</head>
+
+<body>
+
+  <!-- menu -->
+  <div id="menu">
+    <h1 class="menu-title">hide and seek <span>neural</span></h1>
+    <p class="menu-sub">select a game mode</p>
+    <div class="menu-cards">
+      <button class="menu-card" id="btn-manual">
+        <span class="card-icon">🎮</span>
+        <span class="card-title">play</span>
+        <span class="card-desc">4 humans, 2 vs 2</span>
+      </button>
+      <button class="menu-card" id="btn-pva">
+        <span class="card-icon">🤖</span>
+        <span class="card-title">human vs ai</span>
+        <span class="card-desc">you control one team</span>
+      </button>
+      <button class="menu-card" id="btn-observe">
+        <span class="card-icon">👁</span>
+        <span class="card-title">watch ai</span>
+        <span class="card-desc">observe the ai play</span>
+      </button>
+      <button class="menu-card" id="btn-train">
+        <span class="card-icon">⚙️</span>
+        <span class="card-title">train ai</span>
+        <span class="card-desc">watch the ai learn</span>
+      </button>
     </div>
+  </div>
 
-    <!-- team selection (PvA) -->
-    <div id="team-picker">
-      <h2 class="menu-title">which team do you play?</h2>
-      <div class="menu-cards">
-        <button class="menu-card hider" id="btn-hider">
-          <span class="card-icon">🫥</span>
-          <span class="card-title">hiders</span>
-          <span class="card-desc">hide from the seekers</span>
-        </button>
-        <button class="menu-card seeker" id="btn-seeker">
-          <span class="card-icon">🔦</span>
-          <span class="card-title">seekers</span>
-          <span class="card-desc">find the hiders</span>
-        </button>
-      </div>
+  <!-- team selection (PvA) -->
+  <div id="team-picker">
+    <h2 class="menu-title">which team do you play?</h2>
+    <div class="menu-cards">
+      <button class="menu-card hider" id="btn-hider">
+        <span class="card-icon">🫥</span>
+        <span class="card-title">hiders</span>
+        <span class="card-desc">hide from the seekers</span>
+      </button>
+      <button class="menu-card seeker" id="btn-seeker">
+        <span class="card-icon">🔦</span>
+        <span class="card-title">seekers</span>
+        <span class="card-desc">find the hiders</span>
+      </button>
     </div>
+  </div>
 
-    <!-- quantity selection (Observe) -->
-    <div id="count-picker">
-      <h2 class="menu-title">players per team</h2>
-      <div class="menu-cards">
-        <button class="menu-card" id="btn-count-1"><span class="card-title">1 vs 1</span></button>
-        <button class="menu-card" id="btn-count-2"><span class="card-title">2 vs 2</span></button>
-        <button class="menu-card" id="btn-count-3"><span class="card-title">3 vs 3</span></button>
-        <button class="menu-card" id="btn-count-4"><span class="card-title">4 vs 4</span></button>
-      </div>
+  <!-- quantity selection (Observe) -->
+  <div id="count-picker">
+    <h2 class="menu-title">players per team</h2>
+    <div class="menu-cards">
+      <button class="menu-card" id="btn-count-1"><span class="card-title">1 vs 1</span></button>
+      <button class="menu-card" id="btn-count-2"><span class="card-title">2 vs 2</span></button>
+      <button class="menu-card" id="btn-count-3"><span class="card-title">3 vs 3</span></button>
+      <button class="menu-card" id="btn-count-4"><span class="card-title">4 vs 4</span></button>
     </div>
+  </div>
 
-    <!-- game -->
-    <div id="app">
-      <div id="hud">
-        <div class="hud-panel">
-          <span class="hud-label seeker">⬤ Seekers</span>
-          <span class="hud-score" id="score-seekers">0</span>
+  <!-- map selection -->
+  <div id="map-picker">
+    <h2 class="menu-title">select a map 🗺️</h2>
+    <div class="menu-cards" id="map-cards"></div>
+  </div>
+
+  <!-- game -->
+  <div id="app">
+    <div id="hud">
+      <div class="hud-panel">
+        <span class="hud-label seeker">⬤ Seekers</span>
+        <span class="hud-score" id="score-seekers">0</span>
+      </div>
+      <div class="hud-panel hud-center">
+        <span class="hud-timer" id="timer">2:00</span>
+        <div class="freeze-bar-wrap">
+          <div class="freeze-bar" id="freeze-bar"></div>
         </div>
-        <div class="hud-panel hud-center">
-          <span class="hud-timer" id="timer">2:00</span>
-          <div class="freeze-bar-wrap">
-            <div class="freeze-bar" id="freeze-bar"></div>
-          </div>
-          <span class="hud-status" id="status">freeze</span>
-        </div>
-        <div class="hud-panel">
-          <span class="hud-label hider">⬤ Hiders</span>
-          <span class="hud-score" id="score-hiders">0</span>
-        </div>
+        <span class="hud-status" id="status">freeze</span>
       </div>
-      <canvas id="canvas"></canvas>
-      <div id="controls"></div>
+      <div class="hud-panel">
+        <span class="hud-label hider">⬤ Hiders</span>
+        <span class="hud-score" id="score-hiders">0</span>
+      </div>
     </div>
+    <canvas id="canvas"></canvas>
+    <div id="controls"></div>
+  </div>
 
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>

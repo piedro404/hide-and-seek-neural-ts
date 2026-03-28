@@ -1,7 +1,7 @@
 export enum TileType {
     EMPTY = 0,
     WALL = 1,
-    OBSTACLE = 2,
+    BUSH = 2,
 }
 
 export interface TileStyle {
@@ -21,7 +21,7 @@ export const TILE_STYLES: Record<TileType, TileStyle> = {
         padding: 0,
         strokeInset: 1,
     },
-    [TileType.OBSTACLE]: {
+    [TileType.BUSH]: {
         fill: "#072212", 
         stroke: "#063d1b", 
         padding: 3,

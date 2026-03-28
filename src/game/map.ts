@@ -1,52 +1,39 @@
-import { CONFIG } from "@/config";
 import { TileType } from "@app-types/map.type";
+import type { GameMap } from "./maps";
 
-export const MAP_LAYOUT: number[][] = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1],
-    [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1],
-    [1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1],
-    [1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
+let activeLayout: TileType[][] = []
 
-export const ROWS = MAP_LAYOUT.length
-export const COLS = MAP_LAYOUT[0].length
-
-export const CANVAS_HEIGHT = ROWS * CONFIG.TILE;
-export const CANVAS_WIDTH = COLS * CONFIG.TILE;
-
-export function isSolid(x: number, y: number): boolean {
-    if (x < 0 || x >= ROWS) return true;
-    if (y < 0 || y >= COLS) return true;
-
-    return MAP_LAYOUT[y][x] === TileType.WALL;
+export function loadMap(map: GameMap): void {
+    activeLayout = map.layout
 }
 
-export function isBush(x: number, y: number): boolean {
-    if (x < 0 || x >= ROWS) return false;
-    if (y < 0 || y >= COLS) return false;
-    
-    return MAP_LAYOUT[y][x] === TileType.OBSTACLE;
+export function getLayout(): TileType[][] {
+    return activeLayout
 }
 
-export function isObstacle(x: number, y: number): boolean {
-    if (x < 0 || x >= ROWS) return false;
-    if (y < 0 || y >= COLS) return false;
+export function isSolid(col: number, row: number): boolean {
+    if (row < 0 || row >= activeLayout.length) return true
+    if (col < 0 || col >= activeLayout[0].length) return true
+    return activeLayout[row][col] === TileType.WALL
+}
 
-    return MAP_LAYOUT[y][x] === TileType.OBSTACLE || MAP_LAYOUT[y][x] === TileType.WALL;
+export function isObstacle(col: number, row: number): boolean {
+    if (row < 0 || row >= activeLayout.length) return true
+    if (col < 0 || col >= activeLayout[0].length) return true
+    return activeLayout[row][col] === TileType.WALL ||
+           activeLayout[row][col] === TileType.BUSH
+}
+
+export function isBush(col: number, row: number): boolean {
+    if (row < 0 || row >= activeLayout.length) return false
+    if (col < 0 || col >= activeLayout[0].length) return false
+    return activeLayout[row][col] === TileType.BUSH
+}
+
+export function getRows(): number {
+    return activeLayout.length
+}
+
+export function getCols(): number {
+    return activeLayout[0]?.length ?? 0
 }
