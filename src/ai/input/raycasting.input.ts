@@ -54,5 +54,34 @@ export function getVisionInputs(player: Player): number[] {
         inputs.push(type / 3);
     }
 
+    const SHORT_RANGE = CONFIG.TILE * CONFIG_IA.PROXIMITY_RANGE_TILES;
+    const FULL_RAYS = CONFIG_IA.PROXIMITY_RAYS;
+
+    for (let i = 0; i < FULL_RAYS; i++) {
+        const rayAngle = (i / FULL_RAYS) * Math.PI * 2;
+        let hit = 0;
+
+        for (
+            let d = CONFIG.TILE * 0.5;
+            d < SHORT_RANGE;
+            d += CONFIG.TILE * 0.5
+        ) {
+            const x = player.position.x + Math.cos(rayAngle) * d;
+            const y = player.position.y + Math.sin(rayAngle) * d;
+
+            if (
+                isSolid(
+                    Math.floor(x / CONFIG.TILE),
+                    Math.floor(y / CONFIG.TILE),
+                )
+            ) {
+                hit = 1 - d / SHORT_RANGE;
+                break;
+            }
+        }
+
+        inputs.push(hit);
+    }
+
     return inputs;
 }

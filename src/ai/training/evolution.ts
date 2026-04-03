@@ -5,14 +5,13 @@ import { Brain } from "../network/brain";
 
 export function evolve(agents: Agent[], team: Team): Agent[] {
     const sorted = [...agents].sort((a, b) => b.fitness - a.fitness);
-    const surviveCount = Math.max(2, Math.floor(sorted.length * CONFIG_IA.PERCENTAGE_SURVIVE));
+    const surviveCount = Math.max(CONFIG_IA.ELITE_COUNT, Math.floor(sorted.length * CONFIG_IA.PERCENTAGE_SURVIVE));
     const survivors = sorted.slice(0, surviveCount);
 
     const nextGen: Agent[] = [];
 
-    nextGen.push(new Agent(team, survivors[0].brain!.clone())); 
-    if (survivors.length > 1) {
-        nextGen.push(new Agent(team, survivors[1].brain!.clone()));
+    for (let elite = 0; elite < CONFIG_IA.ELITE_COUNT && elite < survivors.length; elite++) {
+        nextGen.push(new Agent(team, survivors[elite].brain!.clone()));
     }
 
     while (nextGen.length < agents.length) {
@@ -20,7 +19,6 @@ export function evolve(agents: Agent[], team: Team): Agent[] {
         const parentB = survivors[Math.floor(Math.random() * survivors.length)];
         const childBrain = Brain.crossover(parentA.brain!, parentB.brain!);
         childBrain.mutate(CONFIG_IA.MUTATION_RATE);
-
         nextGen.push(new Agent(team, childBrain));
     }
 

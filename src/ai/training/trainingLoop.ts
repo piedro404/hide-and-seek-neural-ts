@@ -69,11 +69,9 @@ export class TrainingLoop {
     }
 
     private runGeneration(): void {
-        // reset fitness de todos
         this.seekerAgents.forEach((a) => a.resetFitness());
         this.hiderAgents.forEach((a) => a.resetFitness());
 
-        // cria players — um por agente
         const players = [
             ...this.seekerAgents.map((agent, i) => {
                 const p = createPlayers({
@@ -97,21 +95,14 @@ export class TrainingLoop {
             }),
         ];
 
-        const state = createGameState(players, this.config.matchSecs);
+        const state = createGameState(players, this.config.matchSecs, CONFIG_IA.TRAIN_FREEZE_SECS);
 
         createGameLoop(state, this.ctx, new Set(), "train-", () => {
-            this.onMatchEnd(state);
+            this.onMatchEnd();
         });
     }
 
-    private onMatchEnd(state: ReturnType<typeof createGameState>): void {
-        this.seekerAgents.forEach((agent) => {
-            agent.addFitness(state.score.seekers);
-        });
-        this.hiderAgents.forEach((agent) => {
-            agent.addFitness(state.score.hiders);
-        });
-
+    private onMatchEnd(): void {
         this.seekerAgents = evolve(this.seekerAgents, Team.SEEKER);
         this.hiderAgents = evolve(this.hiderAgents, Team.HIDER);
 

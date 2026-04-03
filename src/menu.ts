@@ -83,7 +83,7 @@ function showTrainConfig(trainMode: TrainMode): void {
             });
         });
 
-    let matchSecs = 60;
+    let matchSecs = 15;
     config
         .querySelectorAll("#match-duration-options .config-btn")
         .forEach((btn) => {

@@ -9,18 +9,21 @@ import { updateHUB } from "./hud";
 import { ControlMode } from "@app-types/control.type";
 import { applyHumanInput } from "@inputs/human.input";
 import { updateBush } from "@services/bush";
+import { isSolid } from "./map";
 
 export function createGameState(
     players: Player[],
     matchSecs?: number,
+    freezeSecs?: number,
 ): GameState {
     const duration = matchSecs ?? CONFIG.MATCH_SECS;
+    const freeze   = freezeSecs ?? CONFIG.FREEZE_SECS;
 
     return {
         players,
         score: { seekers: 0, hiders: 0, tick: 0 },
-        freezeFrames: CONFIG.FREEZE_SECS * 60,
-        matchFrames: duration * 60 + CONFIG.FREEZE_SECS * 60,
+        freezeFrames: freeze * 60,
+        matchFrames: duration * 60 + freeze * 60,
         running: false,
     };
 }

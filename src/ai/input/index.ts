@@ -2,6 +2,7 @@ import type { Player } from "@entities/Player";
 import { getVisionInputs } from "./raycasting.input";
 import { getNearestInfo } from "./seeingPlayers.input";
 import { getCols, getRows } from "@game/map";
+import { CONFIG_IA } from "@/config";
 
 export function buildInputs(player: Player, perTime: number): number[] {
     return [
@@ -14,3 +15,5 @@ export function buildInputs(player: Player, perTime: number): number[] {
         ...getNearestInfo(player),
     ];
 }
+
+export const INPUT_SIZE = CONFIG_IA.RAYS_PER_PLAYER * 2 + CONFIG_IA.PROXIMITY_RAYS + 5 + 2;

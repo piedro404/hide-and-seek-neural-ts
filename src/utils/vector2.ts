@@ -26,4 +26,8 @@ export class Vector2 {
     angleTo(other: Vector2): number {
         return Math.atan2(other.y - this.y, other.x - this.x);
     }
+
+    clone(): Vector2 {
+        return new Vector2(this.x, this.y);
+    }
 }

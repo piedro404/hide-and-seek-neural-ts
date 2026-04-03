@@ -1,6 +1,7 @@
 import type { BrainNetworkInput } from "@app-types/agent.type";
 import { loadBrain, saveBrain } from "../model";
 import type { Team } from "@app-types/team.type";
+import { CONFIG_IA } from "@/config";
 
 export class Brain {
     weights: number[][][] = [];
@@ -46,7 +47,7 @@ export class Brain {
             );
         }
 
-        this.outputs = [inputs]; 
+        this.outputs = [inputs];
 
         for (let layer = 1; layer < this.layers.length; layer++) {
             const layerOutputs: number[] = [];
@@ -133,11 +134,13 @@ export class Brain {
                 ) {
                     if (Math.random() < rate) {
                         this.weights[layer][neuron][weight] +=
-                            (Math.random() * 2 - 1) * 0.5;
+                            (Math.random() * 2 - 1) *
+                            CONFIG_IA.MUTATION_STRENGTH;
                     }
                 }
                 if (Math.random() < rate) {
-                    this.biases[layer][neuron] += (Math.random() * 2 - 1) * 0.5;
+                    this.biases[layer][neuron] +=
+                        (Math.random() * 2 - 1) * CONFIG_IA.MUTATION_STRENGTH;
                 }
             }
         }
