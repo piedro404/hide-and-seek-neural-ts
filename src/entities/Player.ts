@@ -1,3 +1,4 @@
+import type { Agent } from "@/ai/agent";
 import { CONFIG } from "@/config";
 import type { ControlMode, Controls } from "@app-types/control.type";
 import { Team } from "@app-types/team.type";
@@ -19,6 +20,7 @@ export class Player {
         y: number,
         public readonly controlMode: ControlMode,
         public readonly controls?: Controls,
+        public agent?: Agent,
     ) {
         this.id = id;
         this.position = new Vector2(x, y);

@@ -5,6 +5,7 @@ import { Team } from "@app-types/team.type";
 import { GameMode, type MenuResult } from "@app-types/game.type";
 import { MAPS } from "@game/maps";
 import { Vector2 } from "@utils/vector2";
+import { Agent } from "./ai/agent";
 
 const HIDER_CONTROLS: Controls[] = [
     { up: "w", down: "s", left: "a", right: "d" },
@@ -37,6 +38,7 @@ function createHider(index: number, mode: ControlMode, mapId: string): Player {
         mode === ControlMode.HUMAN && HIDER_CONTROLS.length > index
             ? HIDER_CONTROLS[index]
             : undefined;
+    const agent = mode === ControlMode.AI ? new Agent(Team.HIDER) : undefined;
 
     return new Player(
         `A${index + 1}`,
@@ -45,6 +47,7 @@ function createHider(index: number, mode: ControlMode, mapId: string): Player {
         pos.y,
         mode,
         controls,
+        agent,
     );
 }
 
@@ -57,6 +60,7 @@ function createSeeker(index: number, mode: ControlMode, mapId: string): Player {
         mode === ControlMode.HUMAN && SEEKER_CONTROLS.length > index
             ? SEEKER_CONTROLS[index]
             : undefined;
+    const agent = mode === ControlMode.AI ? new Agent(Team.SEEKER) : undefined;
 
     return new Player(
         `B${index + 1}`,
@@ -65,6 +69,7 @@ function createSeeker(index: number, mode: ControlMode, mapId: string): Player {
         pos.y,
         mode,
         controls,
+        agent,
     );
 }
 

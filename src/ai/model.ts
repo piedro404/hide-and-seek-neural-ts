@@ -1,12 +1,12 @@
-import { STORAGE_KEYS, type SavedWeights } from "@app-types/agent.type";
+import { STORAGE_KEYS, type SavedBrain } from "@app-types/agent.type";
 import { Team } from "@app-types/team.type";
 
-export function saveWeights(team: Team, data: SavedWeights): void {
+export function saveBrain(team: Team, data: SavedBrain): void {
     const key = team === Team.SEEKER ? STORAGE_KEYS.seekerAI : STORAGE_KEYS.hiderAI;
     localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function loadWeights(team: Team): SavedWeights | null {
+export function loadBrain(team: Team): SavedBrain | null {
     const key = team === Team.SEEKER ? STORAGE_KEYS.seekerAI : STORAGE_KEYS.hiderAI;
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : null;
@@ -25,7 +25,7 @@ export function hasTrainedModel(): boolean {
            localStorage.getItem(STORAGE_KEYS.hiderAI)  !== null;
 }
 
-export function clearWeights(): void {
+export function clearBrain(): void {
     localStorage.removeItem(STORAGE_KEYS.seekerAI);
     localStorage.removeItem(STORAGE_KEYS.hiderAI);
     localStorage.removeItem(STORAGE_KEYS.generation);

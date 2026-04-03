@@ -44,7 +44,7 @@ function tick(
         if (player.controlMode === ControlMode.HUMAN) {
             applyHumanInput(player, keys, frozen);
         } else {
-            // Lógica de atualização para jogadores controlados por IA pode ser implementada aqui
+            player.agent?.update(player, state.players, frozen);
         }
     });
 

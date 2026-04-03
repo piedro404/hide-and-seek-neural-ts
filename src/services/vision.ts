@@ -1,9 +1,8 @@
 import { CONFIG } from "@/config";
-import { Team } from "@app-types/team.type";
 import { VISION_CONFIG, type VisionCone } from "@app-types/vision.type";
 import type { Player } from "@entities/Player";
 import { isObstacle } from "@game/map";
-import type { Vector2 } from "@utils/vector2";
+import { Vector2 } from "@utils/vector2";
 
 function hasLineOfSight(from: Vector2, to: Vector2): boolean {
     const distance = from.distanceTo(to);

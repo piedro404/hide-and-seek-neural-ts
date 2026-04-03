@@ -11,3 +11,9 @@ export const CONFIG = {
     SCORE_TICKS: 60,
     FPS: 60,
 };
+
+export const CONFIG_IA = {
+    MUTATION_RATE: 0.1,
+    RAYS_PER_PLAYER: 7,
+    ACTIVATION_THRESHOLD: 0.5,
+}
