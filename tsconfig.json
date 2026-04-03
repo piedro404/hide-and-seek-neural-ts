@@ -31,6 +31,9 @@
     /* Paths */
     "baseUrl": "./",
     "paths": {
+      "@ai/*": [
+        "src/ai/*"
+      ],
       "@entities/*": [
         "src/entities/*"
       ],

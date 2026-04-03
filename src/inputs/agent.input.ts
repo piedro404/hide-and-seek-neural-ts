@@ -1,5 +1,4 @@
 import { CONFIG, CONFIG_IA } from "@/config";
-import { Team } from "@app-types/team.type";
 import type { Player } from "@entities/Player";
 
 export function applyAgentInput(player: Player, outputs: number[]): void {

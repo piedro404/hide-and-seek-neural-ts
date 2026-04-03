@@ -1,4 +1,4 @@
-import type { Agent } from "@/ai/agent";
+import type { Agent } from "@/ai/agent/agent";
 import { CONFIG } from "@/config";
 import type { ControlMode, Controls } from "@app-types/control.type";
 import { Team } from "@app-types/team.type";

@@ -8,7 +8,7 @@ import { setupControls } from "@game/hud";
 import { CONFIG } from "./config";
 import { MAPS } from "@game/maps";
 import { GameMode } from "@app-types/game.type";
-import { hasTrainedModel } from "./ai/model";
+import { hasTrainedModel } from "@ai/model";
 
 function setupCanvas(): CanvasRenderingContext2D {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;

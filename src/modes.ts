@@ -5,7 +5,7 @@ import { Team } from "@app-types/team.type";
 import { GameMode, type MenuResult } from "@app-types/game.type";
 import { MAPS } from "@game/maps";
 import { Vector2 } from "@utils/vector2";
-import { Agent } from "./ai/agent";
+import { Agent } from "@ai/agent/agent";
 
 const HIDER_CONTROLS: Controls[] = [
     { up: "w", down: "s", left: "a", right: "d" },

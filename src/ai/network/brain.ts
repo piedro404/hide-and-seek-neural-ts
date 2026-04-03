@@ -45,14 +45,14 @@ export class Brain {
                 `Expected ${this.layers[0]} inputs, got ${inputs.length}`,
             );
         }
-        this.outputs[0] = inputs;
+
+        this.outputs = [inputs]; 
 
         for (let layer = 1; layer < this.layers.length; layer++) {
-            this.outputs.push([]);
+            const layerOutputs: number[] = [];
 
             for (let neuron = 0; neuron < this.layers[layer]; neuron++) {
                 let sum = 0;
-
                 for (
                     let weight = 0;
                     weight < this.layers[layer - 1];
@@ -62,11 +62,12 @@ export class Brain {
                         this.weights[layer - 1][neuron][weight] *
                         this.outputs[layer - 1][weight];
                 }
-
-                this.outputs[layer][neuron] = this.activate(
-                    sum + this.biases[layer - 1][neuron],
+                layerOutputs.push(
+                    this.activate(sum + this.biases[layer - 1][neuron]),
                 );
             }
+
+            this.outputs.push(layerOutputs);
         }
 
         return this.outputs[this.outputs.length - 1];
@@ -101,5 +102,72 @@ export class Brain {
         brain.biases = brainData.biases;
 
         return brain;
+    }
+
+    clone(): Brain {
+        const clone = new Brain({
+            inputsSize: this.layers[0],
+            hiddenLayers: this.layers.slice(1, -1),
+            outputSize: this.layers[this.layers.length - 1],
+        });
+
+        clone.weights = this.weights.map((layer) =>
+            layer.map((neuron) => [...neuron]),
+        );
+        clone.biases = this.biases.map((layer) => [...layer]);
+
+        return clone;
+    }
+
+    mutate(rate: number): void {
+        for (let layer = 0; layer < this.weights.length; layer++) {
+            for (
+                let neuron = 0;
+                neuron < this.weights[layer].length;
+                neuron++
+            ) {
+                for (
+                    let weight = 0;
+                    weight < this.weights[layer][neuron].length;
+                    weight++
+                ) {
+                    if (Math.random() < rate) {
+                        this.weights[layer][neuron][weight] +=
+                            (Math.random() * 2 - 1) * 0.5;
+                    }
+                }
+                if (Math.random() < rate) {
+                    this.biases[layer][neuron] += (Math.random() * 2 - 1) * 0.5;
+                }
+            }
+        }
+    }
+
+    static crossover(parentA: Brain, parentB: Brain): Brain {
+        const child = parentA.clone();
+
+        for (let layer = 0; layer < child.weights.length; layer++) {
+            for (
+                let neuron = 0;
+                neuron < child.weights[layer].length;
+                neuron++
+            ) {
+                for (
+                    let weight = 0;
+                    weight < child.weights[layer][neuron].length;
+                    weight++
+                ) {
+                    if (Math.random() < 0.5) {
+                        child.weights[layer][neuron][weight] =
+                            parentB.weights[layer][neuron][weight];
+                    }
+                }
+                if (Math.random() < 0.5) {
+                    child.biases[layer][neuron] = parentB.biases[layer][neuron];
+                }
+            }
+        }
+
+        return child;
     }
 }
