@@ -99,7 +99,7 @@ export class TrainingLoop {
 
         createGameLoop(state, this.ctx, new Set(), "train-", () => {
             this.onMatchEnd();
-        });
+        }, true);
     }
 
     private onMatchEnd(): void {

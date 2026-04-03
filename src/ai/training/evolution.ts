@@ -4,7 +4,7 @@ import type { Team } from "@app-types/team.type";
 import { Brain } from "../network/brain";
 
 export function evolve(agents: Agent[], team: Team): Agent[] {
-    const sorted = [...agents].sort((a, b) => b.fitness - a.fitness);
+    const sorted = [...agents].sort((a, b) => b.normalizedFitness() - a.normalizedFitness());
     const surviveCount = Math.max(CONFIG_IA.ELITE_COUNT, Math.floor(sorted.length * CONFIG_IA.PERCENTAGE_SURVIVE));
     const survivors = sorted.slice(0, surviveCount);
 

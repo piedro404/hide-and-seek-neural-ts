@@ -13,6 +13,7 @@ export class Agent {
     fitness: number = 0;
     private prevPosition: Vector2 | null = null;
     private visitedTiles = new Set<string>();
+    private frames: number = 0;
 
     constructor(team: Team, brain?: Brain) {
         if (brain) {
@@ -39,6 +40,7 @@ export class Agent {
 
     resetFitness(): void {
         this.fitness = 0;
+        this.frames = 0;
         this.prevPosition = null;
         this.visitedTiles.clear();
     }
@@ -68,5 +70,10 @@ export class Agent {
 
         this.addFitness(reward);
         this.prevPosition = player.position.clone();
+        this.frames++;
+    }
+
+    normalizedFitness(): number {
+        return this.frames > 0 ? this.fitness / this.frames : 0;
     }
 }

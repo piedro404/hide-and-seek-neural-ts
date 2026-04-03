@@ -1,4 +1,4 @@
-import { CONFIG } from "@/config";
+import { CONFIG, CONFIG_IA } from "@/config";
 import type { GameState } from "@app-types/score.type";
 import { Team } from "@app-types/team.type";
 import { Player } from "@entities/Player";
@@ -9,7 +9,6 @@ import { updateHUB } from "./hud";
 import { ControlMode } from "@app-types/control.type";
 import { applyHumanInput } from "@inputs/human.input";
 import { updateBush } from "@services/bush";
-import { isSolid } from "./map";
 
 export function createGameState(
     players: Player[],
@@ -17,7 +16,7 @@ export function createGameState(
     freezeSecs?: number,
 ): GameState {
     const duration = matchSecs ?? CONFIG.MATCH_SECS;
-    const freeze   = freezeSecs ?? CONFIG.FREEZE_SECS;
+    const freeze = freezeSecs ?? CONFIG.FREEZE_SECS;
 
     return {
         players,
@@ -68,8 +67,9 @@ export function createGameLoop(
     state: GameState,
     ctx: CanvasRenderingContext2D,
     keys: Set<string>,
-    hubPrefix: string = "",
+    hudPrefix: string = "",
     onMatchEnd?: () => void,
+    isTraining: boolean = false,
 ): () => void {
     let rafId: number;
 
@@ -84,11 +84,13 @@ export function createGameLoop(
     }
 
     function loop(): void {
-        tick(state, ctx, keys, hubPrefix);
-        if (state.running) rafId = requestAnimationFrame(loop);
-        else {
-            onMatchEnd?.();
+        const steps = isTraining ? CONFIG_IA.TRAIN_SPEED : 1;
+        for (let i = 0; i < steps; i++) {
+            tick(state, ctx, keys, hudPrefix);
+            if (!state.running) break;
         }
+        if (state.running) rafId = requestAnimationFrame(loop);
+        else onMatchEnd?.();
     }
 
     start();
