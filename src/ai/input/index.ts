@@ -4,7 +4,12 @@ import { getNearestInfo } from "./seeingPlayers.input";
 import { getCols, getRows } from "@game/map";
 import { CONFIG, CONFIG_IA } from "@/config";
 
-export function buildInputs(player: Player, perTime: number): number[] {
+export function buildInputs(
+    player: Player,
+    perTime: number,
+    vx: number,
+    vy: number,
+): number[] {
     const mapW = getCols() * CONFIG.TILE;
     const mapH = getRows() * CONFIG.TILE;
 
@@ -14,14 +19,17 @@ export function buildInputs(player: Player, perTime: number): number[] {
         player.position.y / mapH,
         player.spotted ? 1 : 0,
         player.inBush ? 1 : 0,
-        player.seeing.length / perTime,
+        player.seeing.length / Math.max(perTime, 1),
         ...getNearestInfo(player),
+        vx,
+        vy,
     ];
 }
 
 export const INPUT_SIZE =
-    CONFIG_IA.RAYS_PER_PLAYER * 2 + // cone — 14
-    CONFIG_IA.NAV_RAYS * 2 + // navegação 360° — 32
-    5 + // pos x, pos y, spotted, inBush, seeing count
-    5; // nearest: dx, dy, dist, angle, inBush
-// total: 56
+    CONFIG_IA.RAYS_PER_PLAYER * 2 + // 14
+    CONFIG_IA.NAV_RAYS * 2        + // 32
+    5                             + // pos x, pos y, spotted, inBush, seeing count
+    5                             + // nearest: dx, dy, dist, angle, inBush
+    2;                              // vx, vy
+// total: 58

@@ -188,6 +188,21 @@ export class TrainingLoop {
     }
 
     private onMatchEnd(): void {
+        const teamSeekerFitness =
+            [...this.seekerAgents]
+                .sort((a, b) => b.fitness - a.fitness)
+                .slice(0, 3)
+                .reduce((sum, a) => sum + a.fitness, 0) / 3;
+
+        const teamHiderFitness =
+            [...this.hiderAgents]
+                .sort((a, b) => b.fitness - a.fitness)
+                .slice(0, 3)
+                .reduce((sum, a) => sum + a.fitness, 0) / 3;
+
+        this.seekerAgents.forEach((a) => a.addFitness(teamSeekerFitness * 0.3));
+        this.hiderAgents.forEach((a) => a.addFitness(teamHiderFitness * 0.3));
+
         const bestSeekerFitness = Math.max(
             ...this.seekerAgents.map((a) => a.fitness),
         );
@@ -196,9 +211,7 @@ export class TrainingLoop {
         );
 
         this.seekerAgents = evolve(this.seekerAgents, Team.SEEKER);
-        if (this.generation % 3 === 0) {
-            this.hiderAgents = evolve(this.hiderAgents, Team.HIDER);
-        }
+        this.hiderAgents = evolve(this.hiderAgents, Team.HIDER);
 
         saveBrain(Team.SEEKER, {
             weights: bestBrain(this.seekerAgents).weights,
