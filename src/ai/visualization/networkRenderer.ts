@@ -9,6 +9,7 @@ interface InputGroup {
 const INPUT_GROUPS: InputGroup[] = [
     { label: "cone rays",    count: 14, color: "#4488ff" },
     { label: "nearby walls", count: 8,  color: "#ff8844" },
+    { label: "open space",   count: 8,  color: "#44ffaa" },
     { label: "position",     count: 2,  color: "#44bb88" },
     { label: "spotted",      count: 1,  color: "#ff4444" },
     { label: "in bush",      count: 1,  color: "#44aa44" },

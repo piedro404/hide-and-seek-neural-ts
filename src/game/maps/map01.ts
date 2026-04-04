@@ -42,5 +42,3 @@ export const map01: BaseGameMap = {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ] satisfies TileType[][],
 };
-
-export type GameMap = typeof map01;

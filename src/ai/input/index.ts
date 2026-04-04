@@ -16,4 +16,9 @@ export function buildInputs(player: Player, perTime: number): number[] {
     ];
 }
 
-export const INPUT_SIZE = CONFIG_IA.RAYS_PER_PLAYER * 2 + CONFIG_IA.PROXIMITY_RAYS + 5 + 2;
+export const INPUT_SIZE =
+    CONFIG_IA.RAYS_PER_PLAYER * 2 +
+    CONFIG_IA.PROXIMITY_RAYS +
+    CONFIG_IA.OPEN_SPACE_RAYS +
+    5 +
+    2;

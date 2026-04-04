@@ -70,7 +70,7 @@ function showTrainConfig(trainMode: TrainMode): void {
     const config = document.getElementById("train-config")!;
     config.style.display = "flex";
 
-    let agentsPerTeam = 10;
+    let agentsPerTeam = 5;
     config
         .querySelectorAll("#agent-count-options .config-btn")
         .forEach((btn) => {

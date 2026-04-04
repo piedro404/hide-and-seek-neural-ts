@@ -10,8 +10,12 @@ export function evolve(agents: Agent[], team: Team): Agent[] {
 
     const nextGen: Agent[] = [];
 
-    for (let elite = 0; elite < CONFIG_IA.ELITE_COUNT && elite < survivors.length; elite++) {
-        nextGen.push(new Agent(team, survivors[elite].brain!.clone()));
+    nextGen.push(new Agent(team, survivors[0].brain!.clone()));
+
+    if (survivors.length > 1) {
+        const second = survivors[1].brain!.clone();
+        second.mutate(CONFIG_IA.MUTATION_RATE * 0.5); 
+        nextGen.push(new Agent(team, second));
     }
 
     while (nextGen.length < agents.length) {

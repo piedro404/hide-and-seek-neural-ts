@@ -14,16 +14,32 @@ function wallPenalty(player: Player): number {
         [col, row - 1],
     ].filter(([c, r]) => isSolid(c, r)).length;
 
-    return adjacentWalls > 0 ? -0.05 * adjacentWalls : 0;
+    return adjacentWalls > 0 ? -0.01 * adjacentWalls : 0;
 }
 
 export function seekerReward(player: Player, prev: Vector2 | null): number {
     let reward = 0;
 
-    const spottedOpen = player.seeing.filter((h) => !h.inBush).length;
-    const spottedInBush = player.seeing.filter((h) => h.inBush).length;
-    reward += spottedOpen * 2.0;
-    reward += spottedInBush * 3.0;
+    const seeingAny = player.seeing.some((h) => !h.inBush);
+    if (seeingAny) {
+        reward += 1.0;
+    }
+
+    const nearest = player.seeing
+        .filter((h) => !h.inBush)
+        .sort(
+            (a, b) =>
+                player.position.distanceTo(a.position) -
+                player.position.distanceTo(b.position),
+        )[0];
+
+    if (nearest && prev) {
+        const distNow = player.position.distanceTo(nearest.position);
+        const distPrev = prev.distanceTo(nearest.position);
+        if (distNow < distPrev) {
+            reward += 0.5;
+        }
+    }
 
     if (player.inBush) reward += 0.05;
 
@@ -31,17 +47,18 @@ export function seekerReward(player: Player, prev: Vector2 | null): number {
 
     return reward + wallPenalty(player) + movementBonus(player, prev);
 }
+
 export function hiderReward(player: Player, prev: Vector2 | null): number {
     let reward = 0;
 
     if (player.spotted && !player.inBush) {
-        reward -= 0.3;
+        reward -= 0.2;
     } else if (player.spotted && player.inBush) {
-        reward -= 0.1;
+        reward -= 0.05;
     } else if (player.inBush) {
         reward += 0.05;
     } else {
-        reward += 0.08;
+        reward += 0.1;
     }
 
     return reward + wallPenalty(player) + movementBonus(player, prev);
@@ -51,7 +68,6 @@ function movementBonus(player: Player, prev: Vector2 | null): number {
     if (!prev) return 0;
     const dist = player.position.distanceTo(prev);
 
-    if (dist > 1.0) return 0.1;
-    if (dist > 0.1) return 0.02;
-    return -0.1;
+    if (dist > 2) return 0.04;
+    return -0.02;
 }

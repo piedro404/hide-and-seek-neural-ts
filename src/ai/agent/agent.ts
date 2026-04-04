@@ -29,7 +29,7 @@ export class Agent {
         if (!this.brain) {
             this.brain = new Brain({
                 inputsSize: INPUT_SIZE,
-                hiddenLayers: [32, 16],
+                hiddenLayers: [32, 16, 8],
                 outputSize: 4,
             });
         }

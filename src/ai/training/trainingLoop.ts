@@ -183,6 +183,13 @@ export class TrainingLoop {
     }
 
     private onMatchEnd(): void {
+        const bestSeekerFitness = Math.max(
+            ...this.seekerAgents.map((a) => a.fitness),
+        );
+        const bestHiderFitness = Math.max(
+            ...this.hiderAgents.map((a) => a.fitness),
+        );
+
         this.seekerAgents = evolve(this.seekerAgents, Team.SEEKER);
         this.hiderAgents = evolve(this.hiderAgents, Team.HIDER);
 
@@ -204,6 +211,10 @@ export class TrainingLoop {
         );
         document.getElementById("train-generation-label")!.textContent =
             `gen ${this.generation}`;
+        document.getElementById("stat-best-seeker")!.textContent =
+            bestSeekerFitness.toFixed(1);
+        document.getElementById("stat-best-hider")!.textContent =
+            bestHiderFitness.toFixed(1);
 
         this.runGeneration();
     }
