@@ -32,6 +32,7 @@ function tick(
     ctx: CanvasRenderingContext2D,
     keys: Set<string>,
     hudPrefix: string = "",
+    highlights: Set<string> = new Set(),
 ): void {
     if (!state.running) return;
 
@@ -59,7 +60,7 @@ function tick(
 
     if (state.matchFrames <= 0) state.running = false;
 
-    render(ctx, state.players, frozen);
+    render(ctx, state.players, frozen, highlights);
     updateHUB(state, hudPrefix);
 }
 
@@ -70,6 +71,8 @@ export function createGameLoop(
     hudPrefix: string = "",
     onMatchEnd?: () => void,
     isTraining: boolean = false,
+    onTick?: (players: Player[]) => void,
+    highlights: Set<string> = new Set(), 
 ): () => void {
     let rafId: number;
 
@@ -86,9 +89,10 @@ export function createGameLoop(
     function loop(): void {
         const steps = isTraining ? CONFIG_IA.TRAIN_SPEED : 1;
         for (let i = 0; i < steps; i++) {
-            tick(state, ctx, keys, hudPrefix);
+            tick(state, ctx, keys, hudPrefix, highlights);
             if (!state.running) break;
         }
+        onTick?.(state.players);
         if (state.running) rafId = requestAnimationFrame(loop);
         else onMatchEnd?.();
     }

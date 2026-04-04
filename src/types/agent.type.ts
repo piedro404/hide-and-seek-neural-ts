@@ -21,3 +21,9 @@ export interface BrainNetworkInput {
     hiddenLayers: number[];
     outputSize: number;
 }
+
+export interface InputGroupNetworkRender {
+    label: string;
+    count: number;
+    color: string;
+}

@@ -14,6 +14,7 @@ export class Agent {
     private prevPosition: Vector2 | null = null;
     private visitedTiles = new Set<string>();
     private frames: number = 0;
+    lastInputs: number[] = [];
 
     constructor(team: Team, brain?: Brain) {
         if (brain) {
@@ -53,6 +54,7 @@ export class Agent {
             (p) => p.team !== player.team,
         ).length;
         const inputs = buildInputs(player, countRivals);
+        this.lastInputs = inputs;
         this.outputs = this.brain!.feedForward(inputs);
 
         applyAgentInput(player, this.outputs);

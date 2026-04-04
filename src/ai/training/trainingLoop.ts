@@ -7,6 +7,8 @@ import { Brain } from "../network/brain";
 import { createGameLoop, createGameState } from "@game/gameLoop";
 import { bestBrain, evolve } from "./evolution";
 import { createPlayers } from "@/modes";
+import { NetworkRenderer } from "@ai/visualization/networkRenderer";
+import type { Player } from "@entities/Player";
 
 export class TrainingLoop {
     private generation: number;
@@ -14,6 +16,10 @@ export class TrainingLoop {
     private hiderAgents: Agent[] = [];
     private ctx: CanvasRenderingContext2D;
     private config: TrainConfig;
+    private seekerRenderer: NetworkRenderer;
+    private hiderRenderer: NetworkRenderer;
+    private currentPlayers: Player[] = [];
+    private highlightSet = new Set<string>();
 
     constructor(ctx: CanvasRenderingContext2D, config: TrainConfig) {
         this.ctx = ctx;
@@ -35,6 +41,9 @@ export class TrainingLoop {
             config.agentsPerTeam,
             savedHider,
         );
+
+        this.seekerRenderer = new NetworkRenderer("seeker");
+        this.hiderRenderer = new NetworkRenderer("hider");
     }
 
     private createPopulation(
@@ -78,7 +87,7 @@ export class TrainingLoop {
                     mode: GameMode.OBSERVE,
                     mapId: this.config.mapId,
                     playersPerTeam: 1,
-                })[1]; 
+                })[1];
                 p.id = `S${i + 1}`;
                 p.agent = agent;
                 return p;
@@ -88,18 +97,89 @@ export class TrainingLoop {
                     mode: GameMode.OBSERVE,
                     mapId: this.config.mapId,
                     playersPerTeam: 1,
-                })[0]; 
+                })[0];
                 p.id = `H${i + 1}`;
                 p.agent = agent;
                 return p;
             }),
         ];
 
-        const state = createGameState(players, this.config.matchSecs, CONFIG_IA.TRAIN_FREEZE_SECS);
+        const state = createGameState(
+            players,
+            this.config.matchSecs,
+            CONFIG_IA.TRAIN_FREEZE_SECS,
+        );
 
-        createGameLoop(state, this.ctx, new Set(), "train-", () => {
-            this.onMatchEnd();
-        }, true);
+        this.currentPlayers = players;
+        this.highlightSet.clear();
+
+        createGameLoop(
+            state,
+            this.ctx,
+            new Set(),
+            "train-",
+            () => {
+                this.onMatchEnd();
+            },
+            true,
+            (players) => {
+                this.updateHighlights();
+                this.updateVisualization(players);
+            },
+            this.highlightSet,
+        );
+    }
+
+    private updateHighlights(): void {
+        this.highlightSet.clear();
+
+        if (this.seekerAgents.length > 0) {
+            const best = this.seekerAgents.reduce((a, b) =>
+                a.fitness > b.fitness ? a : b,
+            );
+            const player = this.currentPlayers.find((p) => p.agent === best);
+            if (player) this.highlightSet.add(player.id);
+        }
+
+        if (this.hiderAgents.length > 0) {
+            const best = this.hiderAgents.reduce((a, b) =>
+                a.fitness > b.fitness ? a : b,
+            );
+            const player = this.currentPlayers.find((p) => p.agent === best);
+            if (player) this.highlightSet.add(player.id);
+        }
+    }
+
+    private updateVisualization(players: Player[]): void {
+        const bestSeeker = this.seekerAgents.reduce((a, b) =>
+            a.fitness > b.fitness ? a : b,
+        );
+        const bestHider = this.hiderAgents.reduce((a, b) =>
+            a.fitness > b.fitness ? a : b,
+        );
+
+        const seekerPlayer = players.find(
+            (p) => p.team === Team.SEEKER && p.agent === bestSeeker,
+        );
+        const hiderPlayer = players.find(
+            (p) => p.team === Team.HIDER && p.agent === bestHider,
+        );
+
+        if (seekerPlayer && bestSeeker.brain && bestSeeker.lastInputs) {
+            this.seekerRenderer.update(
+                bestSeeker.brain,
+                bestSeeker.lastInputs,
+                bestSeeker.outputs,
+            );
+        }
+
+        if (hiderPlayer && bestHider.brain && bestHider.lastInputs) {
+            this.hiderRenderer.update(
+                bestHider.brain,
+                bestHider.lastInputs,
+                bestHider.outputs,
+            );
+        }
     }
 
     private onMatchEnd(): void {
