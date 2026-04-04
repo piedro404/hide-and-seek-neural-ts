@@ -109,14 +109,14 @@ export class TrainingLoop {
             }),
         ];
 
+        this.currentPlayers = players;
+        this.highlightSet.clear();
+
         const state = createGameState(
             players,
             this.config.matchSecs,
             CONFIG_IA.TRAIN_FREEZE_SECS,
         );
-
-        this.currentPlayers = players;
-        this.highlightSet.clear();
 
         createGameLoop(
             state,
