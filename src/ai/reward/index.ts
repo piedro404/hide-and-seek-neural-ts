@@ -18,7 +18,7 @@ function wallPenalty(player: Player): number {
 }
 
 export function seekerReward(player: Player, prev: Vector2 | null): number {
-    let reward = 0;
+    let reward = 0.02;
 
     const seeingAny = player.seeing.some((h) => !h.inBush);
     if (seeingAny) {

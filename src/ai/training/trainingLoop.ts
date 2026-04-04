@@ -63,10 +63,15 @@ export class TrainingLoop {
                 return new Agent(team, brain);
             }
 
+            const mutationRate =
+                team === Team.SEEKER
+                    ? CONFIG_IA.SEEKER_MUTATION_RATE
+                    : CONFIG_IA.HIDER_MUTATION_RATE;
+
             const agent = new Agent(team);
 
             if (savedBrain && i > 0) {
-                agent.brain!.mutate(CONFIG_IA.MUTATION_RATE);
+                agent.brain!.mutate(mutationRate);
             }
 
             return agent;
@@ -191,7 +196,9 @@ export class TrainingLoop {
         );
 
         this.seekerAgents = evolve(this.seekerAgents, Team.SEEKER);
-        this.hiderAgents = evolve(this.hiderAgents, Team.HIDER);
+        if (this.generation % 3 === 0) {
+            this.hiderAgents = evolve(this.hiderAgents, Team.HIDER);
+        }
 
         saveBrain(Team.SEEKER, {
             weights: bestBrain(this.seekerAgents).weights,

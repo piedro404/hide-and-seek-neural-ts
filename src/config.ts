@@ -13,7 +13,8 @@ export const CONFIG = {
 };
 
 export const CONFIG_IA = {
-    MUTATION_RATE: 0.25,
+    SEEKER_MUTATION_RATE: 0.35, 
+    HIDER_MUTATION_RATE:  0.2,  
     MUTATION_STRENGTH: 0.4,
     PERCENTAGE_SURVIVE: 0.3,
     RAYS_PER_PLAYER: 7,
